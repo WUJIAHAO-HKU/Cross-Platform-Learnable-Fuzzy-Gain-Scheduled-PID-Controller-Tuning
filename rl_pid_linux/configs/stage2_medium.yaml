@@ -1,0 +1,61 @@
+# ============================================================================
+# 阶段2训练配置：中等补偿
+# 前提：阶段1训练稳定
+# 目标：delta_scale_max=5.0
+# 预计训练时间：4-6小时
+# ============================================================================
+
+robot:
+  name: "franka_panda"
+  init_position: [0.0, -0.3, 0.0, -2.2, 0.0, 2.0, 0.79]
+
+simulation:
+  time_step: 0.001
+
+pid_params:
+  Kp: [50.0, 50.0, 50.0, 50.0, 20.0, 10.0, 10.0]
+  Ki: [0.5, 0.5, 0.5, 0.5, 0.2, 0.1, 0.1]
+  Kd: [5.0, 5.0, 5.0, 5.0, 2.0, 1.0, 1.0]
+
+rl_params:
+  delta_scale_min: 0.5
+  delta_scale_max: 5.0  # ⭐ 阶段2：中等补偿
+  delta_tau_clip: 10.0
+  
+  warmup_disable_steps: 100
+  warmup_ramp_steps: 500
+  
+  w_track: 20.0
+  w_vel: 0.001
+  w_action: 0.0001
+  w_delta: 0.0001
+  
+  actor_hidden: [512, 256, 128]
+  critic_hidden: [256, 256, 512, 256]
+  
+  learning_rate_actor: 0.0005
+  learning_rate_critic: 0.0005
+  
+  buffer_size: 100000
+  batch_size: 128
+  gamma: 0.99
+  tau: 0.01
+  
+  noise_std: 0.3
+  noise_decay: 0.999999
+  noise_min: 0.1
+
+trajectory:
+  type: "circle"
+  speed: 0.3
+  amplitude: 0.2
+
+training:
+  total_timesteps: 1000000  # 100万步
+  eval_freq: 10000
+  n_eval_episodes: 5
+  save_freq: 50000
+  log_interval: 100
+
+max_steps: 10000
+

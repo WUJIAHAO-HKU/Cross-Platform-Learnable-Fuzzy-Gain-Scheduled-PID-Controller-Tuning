@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# MATLAB
+*.asv
+*.mex*
+slprj/
+*.slxc
+
+# Data and results
+*.mat
+*.pkl
+*.pth
+*.h5
+*.hdf5
+logs/
+results/
+checkpoints/
+*.log
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Archived files
+archived_docs/
+*.zip
+
+# Large files
+*.pdf
+*.png
+*.jpg
+*.gif
+
+# Chinese named directories
+参考文献/
+开源机器人urdf/

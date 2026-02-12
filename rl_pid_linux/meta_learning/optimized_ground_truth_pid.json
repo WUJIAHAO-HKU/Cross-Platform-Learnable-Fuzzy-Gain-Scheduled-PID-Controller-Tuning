@@ -1,0 +1,29 @@
+{
+  "Laikago": {
+    "urdf": "laikago/laikago.urdf",
+    "optimal_pid": {
+      "kp": 0.8752341087376784,
+      "ki": 0.0,
+      "kd": 0.8825478411690131,
+      "error_deg": 0.07381732684793059
+    }
+  },
+  "KUKA iiwa": {
+    "urdf": "kuka_iiwa/model.urdf",
+    "optimal_pid": {
+      "kp": 10.260857986516598,
+      "ki": 0.0,
+      "kd": 3.2995672242156484,
+      "error_deg": 15.465844034530594
+    }
+  },
+  "Franka Panda": {
+    "urdf": "franka_panda/panda.urdf",
+    "optimal_pid": {
+      "kp": 142.53,
+      "ki": 1.43,
+      "kd": 14.25,
+      "error_deg": 2.1
+    }
+  }
+}

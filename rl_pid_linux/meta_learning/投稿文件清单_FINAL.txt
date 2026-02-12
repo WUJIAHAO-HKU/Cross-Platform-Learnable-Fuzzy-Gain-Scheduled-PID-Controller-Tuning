@@ -1,0 +1,38 @@
+========================================
+RAS期刊投稿 - 必须上传的文件清单
+========================================
+
+【核心文件】3个
+✓ essay_without_author_information.tex  （主文档）
+✓ cas-dc.cls                            （文档类）
+✓ cas-model2-names.bst                  （参考文献样式）
+
+【图片文件】7个 PNG + 1个 PDF
+✓ franka_panda_simulation.png
+✓ kuka_iiwa_simulation.png
+✓ laikago_quadruped_simulation.png
+✓ per_joint_error_comparison.png
+✓ Figure4_comprehensive_tracking_performance.png
+✓ disturbance_comparison_final.png
+✓ rl_training_dashboard.png
+✓ neutral_network.pdf                   （神经网络架构图）
+
+【补充文件】2个
+✓ highlights.tex                        （研究亮点）
+✓ cover_letter.tex                      （投稿信-双盲版）
+
+========================================
+总计: 13个文件 (3.4 MB)
+========================================
+
+【打包文件】
+RAS_Submission_Package.zip
+
+【上传方式】
+将 RAS_Submission_Package.zip 直接上传到投稿系统
+
+【重要提示】
+1. 所有文件已在zip包的根目录（无子文件夹）
+2. 包含所有LaTeX编译所需的依赖文件
+3. 已修复所有已知的编译错误
+

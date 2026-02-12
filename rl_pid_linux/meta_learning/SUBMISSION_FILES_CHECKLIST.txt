@@ -1,0 +1,39 @@
+========================================
+RAS期刊投稿文件清单
+========================================
+
+【必须上传的文件】
+
+1. 主文档
+   □ essay_without_author_information.tex
+
+2. 文档类和样式文件
+   □ cas-dc.cls
+   □ cas-model2-names.bst
+
+3. 所有图片文件（.png）
+   □ franka_panda_simulation.png
+   □ kuka_iiwa_simulation.png
+   □ laikago_quadruped_simulation.png
+   □ Figure1_framework.png
+   □ Figure2_data_augmentation_flowchart.png
+   □ Figure3_network_architectures.png
+   □ Figure4_comprehensive_tracking_performance.png
+   □ Figure5_training_convergence.png
+   □ Figure6_joint_specific_comparison.png
+   □ Figure7_data_augmentation_ablation.png
+   □ Figure8_cross_platform_generalization.png
+   □ Figure9_kuka_robustness.png
+   □ Figure10_laikago_robustness.png
+   □ rl_training_dashboard.png
+
+4. 补充文件
+   □ highlights.tex
+   □ cover_letter.tex
+
+【注意事项】
+- 所有图片必须与.tex文件在同一目录
+- 确保文件名与tex中引用的完全一致
+- 建议打包成.zip上传
+
+========================================

@@ -1,0 +1,79 @@
+# ============================================================================
+# 阶段1最终配置：接受PID基线，用极小RL补偿动态误差
+# 核心思想：PID有0.5弧度动态误差是正常的，让RL补偿这个误差
+# ============================================================================
+
+# 机器人配置
+robot:
+  name: "franka_panda"
+  init_position: [0.0, -0.3, 0.0, -2.2, 0.0, 2.0, 0.79]
+
+# 仿真参数
+simulation:
+  time_step: 0.001  # 1kHz
+  gravity: [0, 0, -9.81]
+
+# ⭐ PID参数（稳定基线 + 重力补偿）
+pid_params:
+  # 使用保守增益确保稳定性，让RL补偿动态误差
+  Kp: [300.0, 300.0, 300.0, 300.0, 200.0, 120.0, 100.0]
+  Ki: [0.5, 0.5, 0.5, 0.5, 0.2, 0.1, 0.1]
+  Kd: [5.0, 5.0, 5.0, 5.0, 2.0, 1.0, 1.0]
+  enable_gravity_compensation: false  # PyBullet已经在模拟器内部处理动力学
+
+# ⭐ RL参数（中等补偿 - 加大RL影响）
+rl_params:
+  # 补偿策略：增大补偿让RL有更多影响
+  delta_scale_min: 0.05     # ⭐ 从0.05开始
+  delta_scale_max: 0.5      # ⭐ 最大0.5（增大5倍）
+  delta_tau_clip: 3.0       # ⭐ 限制到3Nm（增大）
+  
+  # 预热期
+  warmup_disable_steps: 1000  # 1秒纯PID
+  warmup_ramp_steps: 3000     # 3秒渐进
+  
+  # ⭐ 奖励权重（增大track权重，让误差降低收益更明显）
+  w_track: 10.0      # ⭐ 增大到10.0，让误差降低有更大收益
+  w_vel: 0.001       # 保持不变
+  w_action: 0.0001   # 保持不变
+  w_delta: 0.0001    # 保持不变
+  
+  # 网络结构（简化）
+  actor_hidden: [256, 128, 64]
+  critic_hidden: [256, 256, 128]
+  
+  # 学习率（降低）
+  learning_rate_actor: 0.0003
+  learning_rate_critic: 0.0003
+  
+  # DDPG超参数（保守配置）
+  buffer_size: 100000
+  batch_size: 256     # 使用较小batch保证稳定
+  gamma: 0.99
+  tau: 0.003          # 更低的tau
+  
+  # 探索噪声（最小化）
+  noise_std: 0.1      # 降低初始噪声（原来0.2）⭐
+  noise_decay: 0.999999
+  noise_min: 0.03
+
+# 轨迹配置（⭐ circle轨迹-慢速）
+trajectory:
+  type: "circle"     # 圆形轨迹（只动2个关节）
+  speed: 0.1         # 慢速：0.1 rad/s
+  amplitude: 0.1     # 小幅度：0.1弧度
+
+# 训练配置
+training:
+  total_timesteps: 500000  # 50万步
+  eval_freq: 10000
+  n_eval_episodes: 5
+  save_freq: 50000
+  log_interval: 100
+
+# 环境配置
+max_steps: 10000  # 每个episode最多10秒
+
+# 并行环境
+n_envs: 4  # ⭐ PPO推荐4个并行环境（DDPG用1个）
+

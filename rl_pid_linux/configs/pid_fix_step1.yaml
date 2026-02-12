@@ -1,0 +1,62 @@
+# ============================================================================
+# PID修复方案1：降低40%增益
+# ============================================================================
+
+robot:
+  name: "franka_panda"
+  init_position: [0.0, -0.3, 0.0, -2.2, 0.0, 2.0, 0.79]
+
+simulation:
+  time_step: 0.001
+  gravity: [0, 0, -9.81]
+
+# ⭐ PID参数修复方案1（降低40%）
+pid_params:
+  Kp: [30.0, 30.0, 30.0, 30.0, 15.0, 8.0, 8.0]      # 原来50 → 30 (-40%)
+  Ki: [0.2, 0.2, 0.2, 0.2, 0.1, 0.05, 0.05]         # 原来0.5 → 0.2 (-60%)
+  Kd: [5.0, 5.0, 5.0, 5.0, 2.0, 1.0, 1.0]           # 保持不变
+
+# 轨迹配置（同原配置）
+trajectory:
+  type: "circle"
+  speed: 0.3
+  amplitude: 0.2
+
+# RL参数（暂时不用，只测试PID）
+rl_params:
+  delta_scale_min: 0.0
+  delta_scale_max: 0.0
+  delta_tau_clip: 5.0
+  warmup_disable_steps: 100000
+  warmup_ramp_steps: 0
+  
+  w_track: 10.0
+  w_vel: 0.001
+  w_action: 0.0001
+  w_delta: 0.0001
+  
+  actor_hidden: [256, 128, 64]
+  critic_hidden: [256, 256, 128]
+  
+  learning_rate_actor: 0.0003
+  learning_rate_critic: 0.0003
+  
+  buffer_size: 100000
+  batch_size: 256
+  gamma: 0.99
+  tau: 0.003
+  
+  noise_std: 0.15
+  noise_decay: 0.999999
+  noise_min: 0.03
+
+training:
+  total_timesteps: 50000
+  eval_freq: 5000
+  n_eval_episodes: 5
+  save_freq: 50000
+  log_interval: 100
+
+max_steps: 10000
+n_envs: 1
+
