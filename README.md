@@ -1,139 +1,106 @@
-# Cross-Platform Learnable Fuzzy PID Controller via Meta-RL
+# Cross-Platform Meta-RL PID Controller Tuning
 
-**Status:** 🎉 **Published in Robotica (Cambridge University Press)** 🎉
+> **Under Review** at *Robotica* (Cambridge University Press) — Manuscript ID: ROB-2026-0021
 
-[![Paper](https://img.shields.io/badge/Paper-Robotica-blue)](https://arxiv.org/pdf/2511.06500)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
+**Paper:** Cross-Platform Learnable Fuzzy Gain-Scheduled PID Controller Tuning via Physics-Constrained Meta-Learning and Reinforcement Learning Adaptation  
+**Authors:** Jiahao Wu · KaHo NG · Shengwen Yu  
+**Preprint:** [arXiv:2511.06500](https://arxiv.org/abs/2511.06500)
 
-## 📄 Publication Information
+---
 
-**Title:** Cross-Platform Learnable Fuzzy Gain-Scheduled Proportional-Integral-Derivative Controller Tuning via Physics-Constrained Meta-Learning and Reinforcement Learning Adaptation
+## What This Does
 
-**Journal:** Robotica (Cambridge University Press)  
-**Submission Date:** January 14, 2026  
-**Manuscript ID:** ROB-2026-0021  
-**arXiv:** [2511.06500](https://arxiv.org/pdf/2511.06500)
+A hierarchical framework that **automatically tunes PID controllers** for different robots without manual parameter engineering:
 
-**Authors:**
-- Jiahao Wu (The University of Hong Kong) - Corresponding Author
-- KaHo NG (The University of Hong Kong)
-- Shengwen Yu (Guangzhou College of Commerce)
+1. **Physics-based data augmentation** — perturb 3 base robots → 232 physically valid variants
+2. **Meta-learning network** — learns a mapping from robot dynamics features to near-optimal PID gains
+3. **RL fine-tuning (PPO)** — online adaptation that further reduces tracking error
 
-## 🚀 Overview
+Tested on **Franka Panda (9-DOF)** and **Laikago (12-DOF)** in PyBullet simulation.
 
-This repository contains the implementation of a novel hierarchical meta-reinforcement learning framework for automated PID controller tuning across heterogeneous robotic platforms. Our method achieves:
-
-- **80.4% error reduction** on challenging high-load joints
-- **19.2% improvement** under parameter uncertainty
-- **Cross-platform generalization** (9-DOF manipulator + 12-DOF quadruped)
-- **10-minute training** per platform on standard CPU
-
-### Key Innovation: Physics-Constrained Data Augmentation
-
-We generate 232 physically valid robot variants from only 3 base platforms through bounded parameter perturbations, enabling data-efficient meta-learning while maintaining physical plausibility.
-
-## 📂 Repository Structure
+## Project Structure
 
 ```
 rl_pid_linux/
-├── meta_learning/              # Core meta-learning implementation
-│   ├── train_meta_pid.py      # Meta-network training
-│   ├── data_augmentation.py   # Physics-based augmentation
-│   ├── meta_pid_optimizer.py  # Hybrid DE+Nelder-Mead optimizer
-│   └── evaluate_meta_rl.py    # Cross-platform evaluation
-├── controllers/               # Controller implementations  
-│   ├── pid_controller.py      # Base PID controller
-│   └── rl_pid_hybrid.py       # RL-PID hybrid controller
-├── envs/                      # Simulation environments
-├── training/                  # RL training scripts
-│   ├── train_ppo.py          # PPO-based adaptation
-│   └── train_ddpg.py         # DDPG baseline
-└── tests/                     # Unit tests
-
-submit_mateials/              # Camera-ready manuscript
-└── meta_rl_pid_control_manuscript.tex
-
-docs/                         # Documentation (archived)
+├── controllers/                 # PID & RL-PID hybrid controllers
+│   ├── pid_controller.py
+│   └── rl_pid_hybrid.py
+├── envs/                        # Gym environments (PyBullet)
+│   ├── franka_env.py
+│   └── trajectory_gen.py
+├── training/                    # RL training (PPO / DDPG)
+│   ├── train_ppo.py
+│   └── train_ddpg.py
+├── meta_learning/               # Core: data augmentation + meta-network
+│   ├── data_augmentation.py     # Physics-constrained sample generation
+│   ├── meta_pid_optimizer.py    # Meta-network + hybrid DE/Nelder-Mead optimizer
+│   ├── train_meta_pid.py        # Train the meta-network
+│   ├── evaluate_meta_rl.py      # Evaluate Meta-PID vs Meta-PID+RL
+│   ├── evaluate_robustness.py   # Disturbance robustness evaluation
+│   ├── evaluate_laikago.py      # Laikago-specific evaluation
+│   ├── meta_rl_combined_env.py  # Combined meta+RL environment
+│   └── meta_rl_disturbance_env.py
+├── quadruped_research/          # Laikago quadruped experiments
+│   ├── adaptive_laikago_env.py
+│   ├── meta_pid_for_laikago.py
+│   ├── train_adaptive_rl.py
+│   └── train_multi_disturbance.py
+└── evaluate_trained_model.py
 ```
 
-## 🛠️ Installation
+## Setup
 
 ```bash
-# Clone repository
-git clone https://github.com/WUJIAHAO-HKU/RL_Pid_Meta-Learning_Based-Data-Augmentation.git
-cd RL_Pid_Meta-Learning_Based-Data-Augmentation
-
-# Create conda environment
 conda create -n meta_rl_pid python=3.8
 conda activate meta_rl_pid
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Install PyBullet for physics simulation
-pip install pybullet==3.2.5
+pip install torch numpy pybullet pybullet_data \
+    stable-baselines3 gymnasium scipy scikit-learn \
+    matplotlib tqdm pyyaml
 ```
 
-## 🎯 Quick Start
+## Workflow
 
-### 1. Generate Augmented Training Data
+### Step 1 — Generate augmented training data
 ```bash
 cd rl_pid_linux/meta_learning
-python data_augmentation.py --base_robots franka kuka laikago --samples_per_robot 100
+python data_augmentation.py
+# Output: augmented_pid_data.json → augmented_pid_data_filtered.json
 ```
 
-### 2. Train Meta-Learning Network
+### Step 2 — Train meta-learning network
 ```bash
-python train_meta_pid.py --data augmented_pid_data_filtered.json --epochs 500
+python train_meta_pid.py
+# Loads augmented_pid_data_filtered.json, trains MetaPIDNetwork
+# Output: meta_pid_augmented.pth
 ```
 
-### 3. RL Adaptation (Optional)
+### Step 3 — RL adaptation (PPO fine-tuning)
 ```bash
 cd ../training
-python train_ppo.py --robot franka --meta_init ../meta_learning/meta_pid_augmented.pth --timesteps 1000000
+python train_ppo.py --robot franka --timesteps 1000000
 ```
 
-### 4. Evaluate Cross-Platform Performance
+### Step 4 — Evaluate
 ```bash
 cd ../meta_learning
-python evaluate_meta_rl.py --robot franka --robot laikago --seeds 100
+
+# Meta-PID vs Meta-PID+RL comparison
+python evaluate_meta_rl.py
+
+# Robustness under disturbances (payload, friction, parameter uncertainty)
+python evaluate_robustness.py
+
+# Laikago quadruped evaluation
+python evaluate_laikago.py
 ```
 
-## 📊 Key Results
+## Citation
 
-| Platform | Metric | Meta-PID | Meta-PID+RL | Improvement |
-|----------|--------|----------|-------------|-------------|
-| **Franka Panda** (9-DOF) | MAE | 7.51° | **6.26°** | **+16.6%** |
-| | RMSE | 29.32° | **25.45°** | +13.2% |
-| **Laikago** (12-DOF) | MAE | 5.91° | 5.91° | +0.0% |
-| | RMSE | 29.70° | 29.29° | +1.4% |
-
-### Robustness Under Disturbances (Franka Panda)
-- **Parameter Uncertainty:** +19.2% improvement
-- **No Disturbance:** +16.6% improvement  
-- **Payload Variation:** +8.1% improvement
-- **Average Across All Scenarios:** +10.0% improvement
-
-## 🔬 Citation
-
-If you use this code in your research, please cite:
-
-```bibtex
-@article{wu2026cross,
-  title={Cross-Platform Learnable Fuzzy Gain-Scheduled Proportional-Integral-Derivative Controller Tuning via Physics-Constrained Meta-Learning and Reinforcement Learning Adaptation},
-  author={Wu, Jiahao and NG, KaHo and Yu, Shengwen},
-  journal={Robotica},
-  year={2026},
-  publisher={Cambridge University Press},
-  note={Manuscript ID: ROB-2026-0021}
-}
-```
-
-**arXiv Preprint:**
 ```bibtex
 @misc{wu2024adaptive,
-  title={Adaptive PID Control for Robotic Systems via Hierarchical Meta-Learning and Reinforcement Learning with Physics-Based Data Augmentation},
+  title={Adaptive PID Control for Robotic Systems via Hierarchical 
+         Meta-Learning and Reinforcement Learning with Physics-Based 
+         Data Augmentation},
   author={Wu, Jiahao and Yu, Shengwen},
   year={2024},
   eprint={2511.06500},
@@ -142,20 +109,6 @@ If you use this code in your research, please cite:
 }
 ```
 
-## 📝 License
+## Contact
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- PyBullet physics simulation
-- Stable-Baselines3 RL library
-- Cambridge University Press for publication
-
-## 📧 Contact
-
-- **Jiahao Wu** - wuj277970@gmail.com
-- **Project Link:** [https://github.com/WUJIAHAO-HKU/RL_Pid_Meta-Learning_Based-Data-Augmentation](https://github.com/WUJIAHAO-HKU/RL_Pid_Meta-Learning_Based-Data-Augmentation)
-
----
-**Note:** This repository contains the official implementation of the method published in *Robotica*. For questions about the paper, please contact the corresponding author.
+Jiahao Wu — wuj277970@gmail.com
