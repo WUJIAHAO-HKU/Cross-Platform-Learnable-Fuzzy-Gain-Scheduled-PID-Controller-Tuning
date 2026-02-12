@@ -1,0 +1,9 @@
+{Motivation and gap:} PID-family controllers remain a pragmatic choice for many robotic systems due to their simplicity and interpretability, but tuning stable, high-performing gains is time-consuming and typically non-transferable across robot morphologies, payloads, and deployment conditions. Fuzzy gain scheduling can provide interpretable online adjustment, yet its per-joint scaling and consequent parameters are platform-dependent and difficult to tune systematically.
+
+
+
+        	\textbf{Proposed approach:} We propose a hierarchical framework for cross-platform tuning of a \emph{learnable fuzzy gain-scheduled PID} (LF-PID). The controller uses shared fuzzy membership partitions to preserve common error semantics, while learning per-joint scaling and Takagi--Sugeno consequent parameters that schedule PID gains online. Combined with physics-constrained virtual robot synthesis, meta-learning provides cross-platform initialization from robot physical features, and a lightweight reinforcement learning (RL) stage performs deployment-specific refinement under dynamics mismatch. Starting from three base simulated platforms, we generate 232 physically valid training variants via bounded perturbations of mass (±10\%), inertia (±15\%), and friction (±20\%).
+
+
+
+        	\textbf{Results and insight:} We evaluate cross-platform generalization on two distinct systems (a 9-DOF serial manipulator and a 12-DOF quadruped) under multiple disturbance scenarios. The RL adaptation stage improves tracking performance on top of the meta-initialized controller, with up to 80.4\% error reduction in challenging high-load joints (12.36°→2.42°) and 19.2\% improvement under parameter uncertainty. We further identify an \textit{optimization ceiling effect}: online refinement yields substantial gains when the meta-initialized baseline exhibits localized deficiencies, but provides limited improvement when baseline quality is already uniformly strong.
