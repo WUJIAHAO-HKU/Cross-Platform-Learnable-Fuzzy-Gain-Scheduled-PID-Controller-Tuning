@@ -1,0 +1,449 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{tgtermes}          % Times-style font
+\usepackage{amsmath,amssymb,bm}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{longtable}
+\usepackage{array}
+
+\hypersetup{colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black,urlcolor=blue!60!black}
+
+% Reviewer comment styling
+\newcommand{\reviewercomment}[1]{\medskip\noindent\textit{``#1''}\medskip}
+\newcommand{\response}{\noindent\textbf{Response:}\par\noindent}
+\newcommand{\rev}[1]{{\color{blue}#1}}
+
+\setlength{\parskip}{0.4em}
+\setlength{\parindent}{0em}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries Response to Reviewers}\\[0.8em]
+{\large Manuscript ID: ROB-2026-0021}\\[0.3em]
+{\large\itshape Cross-Platform Learnable Fuzzy Gain-Scheduled PID Controller Tuning\\
+via Physics-Constrained Meta-Learning and Reinforcement Learning Adaptation}\\[0.3em]
+{\large Journal: \textbf{Robotica} (Cambridge University Press)}\\[0.3em]
+\end{center}
+
+\bigskip
+\hrule
+\bigskip
+
+We sincerely thank the Associate Editor and both reviewers for their thorough and constructive feedback. We have carefully addressed each comment through specific revisions to the manuscript, supported by additional analysis and clarification. Below we provide point-by-point responses. \rev{All modifications are highlighted in blue in the revised manuscript.}
+
+%% =========================================================================
+\section*{Summary of Revisions}
+
+\begin{longtable}{@{}p{0.12\textwidth}p{0.42\textwidth}p{0.38\textwidth}@{}}
+\toprule
+\textbf{Comment} & \textbf{Issue} & \textbf{Action Taken} \\
+\midrule
+\endhead
+R1.1 & Alternative optimizers (CMA-ES, L-BFGS-B) & Pilot comparison on 20 robots; new Table~2 \\
+R1.2 & Computational efficiency (30--60 min) & Clarified one-time offline vs.\ deployment cost; Appendix cost paragraph \\
+R1.3 & L-BFGS-B for high-dim parameter space & Explained black-box objective; cited pilot results \\
+R2.1 & Cross-platform definition \& scope & Formal definition; leave-one-platform-out analysis (new Section~5.1.5 subsubsection) \\
+R2.2 & Perturbation range inconsistency & Unified: inertia $\pm$15\%, friction $\pm$20\%, damping $\pm$30\% across all locations \\
+R2.3 & Position control masking dynamics & PD mechanism explained; dual-edged assessment; limitation paragraph \\
+R2.4 & 30$^\circ$ threshold sensitivity & Stability rationale; sensitivity table (5 thresholds); U-shaped analysis \\
+R2.5 & Ceiling effect quantification & $G_{\mathrm{RL}}$ metric; scatter plot; deployment criteria \\
+R2.6 & $\theta_{\mathrm{meta}}$ vs.\ Figure~1 inconsistency & Figure~1 fully redrawn; $N=232$; caption expanded \\
+Editor & Template conversion & Full ROB-New.cls conversion; Author Contributions etc.\ added \\
+\bottomrule
+\end{longtable}
+
+%% =========================================================================
+\section*{Reviewer 1}
+
+%% --- R1.1 ---
+\subsection*{R1.1 --- Alternative Optimization Algorithms (CMA-ES, L-BFGS-B)}
+
+\reviewercomment{The authors employed a hybrid optimization strategy combining Differential Evolution and the Nelder-Mead simplex method to generate ground-truth parameters for the meta-learning stage. While this approach is functionally sound, its efficiency and alignment with the current state-of-the-art are questionable. Instead of the utilized DE and Nelder-Mead algorithms, the authors should have considered more modern optimization techniques like PSO, ABC or CMA-ES for global search and also L-BFGS / L-BFGS-B for local refinement in order to remarkably reduce the 30-60 second per-variant data generation process and ensure state-of-the-art efficiency.}
+
+\response
+We conducted a pilot comparison of four optimization algorithms on 20 representative virtual robots and added the results as a new table (Table~2) in the revised manuscript.
+
+\begin{table}[h]
+\centering\small
+\caption*{\textbf{Pilot comparison} (20 robots, identical simulation budget)}
+\begin{tabular}{lcccc}
+\toprule
+Method & Obj.\ ($^\circ$) & Evals & Time (s) & Notes \\
+\midrule
+DE+NM (ours) & 13.9$\pm$4.2 & 128 & 42$\pm$12 & Robust; no gradient needed \\
+CMA-ES       & 13.2$\pm$3.8 & 210 & 68$\pm$18 & Better mean; 64\% more evals \\
+L-BFGS-B     & 18.7$\pm$9.1 &  85 & 28$\pm$8  & Fast but frequent local minima \\
+PSO ($N\!=\!20$) & 14.5$\pm$5.0 & 400 & 125$\pm$30 & Slowest; marginal gain \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Key findings: CMA-ES achieves marginally better objective values ($-$5\%) but requires 64\% more function evaluations, translating to proportionally higher wall time since each evaluation involves a full PyBullet simulation. L-BFGS-B is fastest per-sample but suffers from frequent convergence to local minima (std 9.1$^\circ$ vs.\ 4.2$^\circ$), yielding 34\% worse mean quality---problematic because poor training labels directly degrade meta-learning. PSO offers no advantage at 3$\times$ cost. We acknowledge that CMA-ES would be a reasonable alternative if higher-quality training labels are desired and offline computation budget is less constrained. This discussion and comparison table have been added to Section~3 (Methodology).
+
+\textbf{Changes:} New ``Choice of Optimizer---Comparison with Alternatives'' paragraph and Table~2 in Section~3. The relevant revised text is reproduced below:
+
+\textbf{Revised manuscript text (Section~3, highlighted in blue):}
+
+\begin{quote}\color{blue}\small
+\textbf{Choice of Optimizer --- Comparison with Alternatives:} We chose DE+Nelder-Mead (NM) for its simplicity and favorable properties in our specific setting, but acknowledge that more advanced optimizers exist. We conducted a pilot comparison on 20 representative virtual robots (10 Franka-type, 10 KUKA-type) to evaluate three alternatives: CMA-ES [Hansen \& Ostermeier, 2003], L-BFGS-B [Byrd et al., 1995], and PSO [Trelea, 2003] (Table~2).
+
+\textbf{Key findings:} (1)~CMA-ES achieves marginally better objective values ($-$5\%) but requires 64\% more function evaluations; since each evaluation involves a full PyBullet simulation, this translates to proportionally higher wall time. (2)~L-BFGS-B is the fastest per-sample but suffers from frequent convergence to local minima (std 9.1$^\circ$ vs 4.2$^\circ$), yielding 34\% worse mean quality---problematic because poor-quality training labels directly degrade meta-learning. (3)~PSO offers no advantage over DE at 3$\times$ computational cost. [\ldots] We note that CMA-ES would be a reasonable alternative if higher-quality training labels are desired and offline computation budget is less constrained.
+\end{quote}
+
+%% --- R1.2 ---
+\subsection*{R1.2 --- Computational Efficiency Concerns}
+
+\reviewercomment{The authors' hybrid optimization strategy (DE + NM) for generating ground-truth parameters is well-documented but appears computationally inefficient relative to the reported infrastructure. Based on the data in Table 13 and Section A.3, the optimization requires 30--60 minutes per robot platform and necessitates a 23-core parallel setup to complete the 232-sample offline dataset. Accordingly, the authors should justify why more modern meta-heuristics algorithms as outlined in Item 1 were not utilized to improve convergence during the 2000-step (20-second) trajectory evaluations.}
+
+\response
+We appreciate the reviewer's concern and recognize that our original presentation was unclear about the distinction between two different computational contexts. We have clarified this in the revised manuscript:
+
+\begin{enumerate}[leftmargin=*, label=\arabic*)]
+\item Offline data generation (one-time cost): The DE+NM optimization takes 30--60\,s per virtual robot on a single CPU core. With 23-core parallelism, the entire 303-sample augmentation completes in approximately 5\,min. This is a \emph{one-time offline preprocessing step} that generates training labels for the meta-network.
+
+\item DE as deployment-time baseline (the ``30--60\,min'' figure): The 30--60\,min/platform figure refers to the hypothetical cost of using DE as a \emph{standalone deployment-time optimizer} for each new platform---which is the DE baseline, not our proposed method. Our method's deployment cost is: 2.5\,min (amortized meta-training) + 10\,min (RL adaptation) = 12.5\,min per new platform.
+
+\item 23-core clarification: The appendix now clearly separates per-sample time (30--60\,s, 1 core) and parallelism (23 cores for batch processing), yielding $\sim$5\,min total for all 303 samples.
+\end{enumerate}
+
+\textbf{Changes:} Appendix~A hyperparameters table (per-sample time corrected to 30--60\,s/1~core; new Parallelism row); new ``One-Time Offline Cost Clarification'' paragraph in Appendix~C. The relevant revised text is reproduced below:
+
+\textbf{Revised manuscript text (Appendix~C, highlighted in blue):}
+
+\begin{quote}\color{blue}\small
+\textbf{One-Time Offline Cost Clarification:} The DE+NM optimization (30--60\,s per sample, $\sim$5\,min total with 23-core parallelism) is a one-time offline preprocessing step that generates training labels for the meta-network. Once the meta-network is trained, DE+NM is never executed again at deployment time. [\ldots] The ``30--60\,min'' figure cited for ``DE optim.\ (per plat.)'' refers to the hypothetical cost of using DE as a standalone deployment-time optimizer for each new platform---which is the DE baseline, not our proposed method.
+\end{quote}
+
+%% --- R1.3 ---
+\subsection*{R1.3 --- High-Dimensional Parameter Space and L-BFGS-B}
+
+\reviewercomment{The authors used the high-dimensional parameter spaces described in their study. For the high-dimensional parameter spaces examined in the study, L-BFGS-B is preferable to Nelder-Mead as it provides substantially better computational efficiency and scalability.}
+
+\response
+While L-BFGS-B is well-suited for smooth, high-dimensional optimization, our LF-PID objective is evaluated through \emph{black-box simulation} (PyBullet forward dynamics) and does not provide analytical gradients. Finite-difference gradient approximation in $330n$ dimensions (2970D for Franka) would require $\sim$5940 additional function evaluations per L-BFGS-B iteration, making it impractical.
+
+Our pilot comparison confirms this limitation: L-BFGS-B achieves the lowest per-sample time but suffers from significantly worse solution quality ($18.7 \pm 9.1^\circ$ vs.\ $13.9 \pm 4.2^\circ$ for DE+NM).
+
+Importantly, the full $330n$ optimization is performed by the meta-network at deployment time via a single forward pass (0.8\,ms), completely bypassing iterative optimization. The DE+NM stage operates on individual virtual robots during offline data generation, where the effective dimensionality is the per-robot LF-PID parameter count (not the full $330n$ cross-platform space). This distinction has been clarified in the revised manuscript.
+
+\textbf{Changes:} New ``Regarding L-BFGS-B for high-dimensional spaces'' paragraph in Section~3 (following the optimizer comparison discussion). The relevant revised text is reproduced below:
+
+\textbf{Revised manuscript text (Section~3, highlighted in blue):}
+
+\begin{quote}\color{blue}\small
+\textbf{Regarding L-BFGS-B for high-dimensional spaces ($330n$):} While L-BFGS-B is well-suited for smooth, high-dimensional optimization, our LF-PID objective $\mathcal{L}_v(\theta)$ is evaluated through \textit{black-box simulation} (PyBullet forward dynamics) and does not provide analytical gradients. Finite-difference gradient approximation in $330n$ dimensions (2970D for Franka) would require $\sim$5940 additional function evaluations per iteration, making L-BFGS-B impractical at deployment scale. For the 232-sample offline stage with smaller per-sample dimensionality, our pilot results confirm that gradient-free DE+NM outperforms L-BFGS-B in solution quality.
+\end{quote}
+
+
+%% =========================================================================
+\section*{Reviewer 2}
+
+%% --- R2.1 ---
+\subsection*{R2.1 --- Cross-Platform Definition and Scope}
+
+\reviewercomment{Regarding the cross-platform claims in the title, abstract, and highlights, the training-testing split described in Section 4.4 (especially 4.4.1) and the cross-platform results and conclusions in Section 5.1 need clarification. Since the training data include Franka and Laikago platforms (at least in the meta-learning phase), please specify whether ``cross-platform'' refers to generalization only during the RL adaptation phase, or to generalization of the entire method to an unseen platform. If the latter is intended, it is recommended to supplement the evaluation with a leave-one-platform-out protocol (e.g., training on a KUKA variant and testing on Franka/Laikago) or adjust the wording on convergence accordingly.}
+
+\response
+We have added a formal definition and scope clarification for ``cross-platform'' throughout the manuscript, explicitly addressed the training--test overlap issue, and discovered that our existing evaluation already constitutes an implicit leave-one-platform-out experiment for the most challenging inter-morphology case.
+
+1) Formal definition (Section~1.2): We now distinguish two complementary levels:
+\begin{itemize}[leftmargin=*]
+\item \emph{Inter-morphology transfer:} A single meta-network serves structurally distinct robots (e.g., 9-DOF serial manipulator and 12-DOF parallel quadruped) via a unified 10D feature representation.
+\item \emph{Intra-morphology generalization:} Within each platform family, the meta-network generalizes to unseen dynamics configurations via physics-constrained perturbation.
+\end{itemize}
+
+2) Leave-one-platform-out analysis (NEW Section~5 subsubsection):
+
+Upon closer examination, the current Laikago evaluation is \emph{de facto} a leave-one-platform-out experiment:
+
+\begin{table}[h]
+\centering\small
+\caption*{\textbf{Leave-one-platform-out: Laikago}}
+\begin{tabular}{lccc}
+\toprule
+Platform & Augmented Variants & Meta-LF-PID MAE & Meta+RL MAE \\
+\midrule
+Franka Panda (9-DOF) & 150 & 7.51$^\circ$ & 6.26$^\circ$ \\
+KUKA iiwa (7-DOF) & 150 & \multicolumn{2}{c}{(training source only)} \\
+\textbf{Laikago (12-DOF)} & \textbf{0} & \textbf{5.91$^\circ$} & \textbf{5.79$^\circ$} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Laikago contributes \textbf{zero} augmented variants to the 232-sample training set. Key findings: (i)~strong zero-shot transfer despite extreme morphological shift; (ii)~RL remains effective ($G_{\mathrm{RL}}=2.1\%$); (iii)~a leave-Franka-out experiment would further strengthen these claims and is identified as future work.
+
+\textbf{Changes:} Section~1.2 definition; Section~4.1 scope remark; Section~4.4.1 protocol revision; \textbf{new} Section~5.1.5 leave-one-platform-out subsubsection; Section~6.2.5 \& 6.3 scope discussion.
+
+\textbf{Revised manuscript excerpts (highlighted in blue):}
+
+1) Section~1.2 --- Formal definition:
+
+\begin{quote}\color{blue}\small
+\textbf{Scope of ``Cross-Platform'':} Throughout this paper, \textit{cross-platform} refers to generalization across robot systems that differ in morphology (DOF count, kinematic topology), dynamics (mass, inertia, friction profiles), and control dimensionality. Our framework addresses two complementary levels:
+\begin{itemize}[leftmargin=*]
+    \item \textit{Inter-morphology transfer:} A single meta-network serves structurally distinct robots (e.g., 9-DOF serial manipulator and 12-DOF parallel quadruped) via a unified 10D feature representation with platform-adaptive output dimensions.
+    \item \textit{Intra-morphology generalization:} Within each platform family, the meta-network generalizes to unseen dynamics configurations generated through physics-constrained perturbation of base platform parameters.
+\end{itemize}
+The meta-learning stage operates at the cross-platform level---encoding shared structure across all training platforms---while the RL stage operates at the single-platform level, adapting only the deployment target's input scaling factors~$\bm{s}$ through online interaction.
+\end{quote}
+
+2) Section~5 --- Leave-one-platform-out key findings:
+
+\begin{quote}\color{blue}\small
+The critical observation is that \textit{Laikago contributes zero augmented variants and at most one base configuration sample to the 232-sample training set}. This means the meta-network's prediction for Laikago is based almost entirely on feature-space generalization from manipulator-only training data---effectively constituting a \textbf{leave-one-platform-out evaluation} for the most challenging inter-morphology transfer case (serial manipulators $\rightarrow$ parallel quadruped).
+
+\textbf{Key findings:} (1)~Strong zero-shot transfer despite extreme morphological shift (5.91$^\circ$ MAE). (2)~RL adaptation remains effective ($G_{\mathrm{RL}}=2.1\%$). (3)~The fact that Laikago achieves \textit{better} baseline performance than Franka (5.91$^\circ$ vs.\ 7.51$^\circ$) despite having negligible training representation rules out simple memorization---the meta-network has learned genuinely transferable feature-to-parameter mappings.
+\end{quote}
+
+3) Section~6.2.5 --- Scope and limitations:
+
+\begin{quote}\color{blue}\small
+\textbf{Scope and limitations of cross-platform claims:} Our cross-platform generalization is \textit{interpolative} (within the training morphology distribution) rather than \textit{extrapolative} (to entirely new robot families). Importantly, our leave-one-platform-out analysis reveals that the current Laikago evaluation is \textit{de facto} a held-out platform test: Laikago contributes zero augmented variants and at most one base configuration sample ($\leq$0.4\%) to the 232-sample training set, yet the meta-network achieves strong zero-shot performance (5.91$^\circ$ MAE). [\ldots] A more rigorous leave-Franka-out experiment---removing $\sim$65\% of training data from one morphological family---and extension to additional robot families (humanoids, mobile manipulators) would further strengthen these cross-platform generalization claims.
+\end{quote}
+
+%% --- R2.2 ---
+\subsection*{R2.2 --- Perturbation Range Inconsistency}
+
+\reviewercomment{The paper presents multiple disturbance ranges in the abstract, methods, and appendix tables (e.g., ``inertia $\pm$15\%'' in the abstract but ``inertia $\pm$10\%'' in the appendix; furthermore, ``friction disturbance'' appears in the text but is missing from the appendix table). This may confuse readers about which parameter set was actually used during training. Additionally, Section 4.4.2 introduces an even wider range ($\pm$20\% mass/inertia, $\pm$50\% friction) for robustness stress-testing, justified as realistic modeling errors. While this is a valid stress test, it should be clearly distinguished from the disturbance settings used for training.}
+
+\response
+We conducted a thorough audit and unified all perturbation range values across the entire manuscript and codebase.
+
+1) Root cause: The actual experiments used inertia $\pm$15\%, as confirmed by KS statistics: pre-filter inertia $\sigma = 0.087 \approx 0.30/\sqrt{12} = 0.0866$ for $U(0.85, 1.15)$. The appendix ($\pm$10\%) and source code ($\pm$5\%) contained typographical errors.
+
+2) Unified ranges: mass $\pm$10\%, inertia $\pm$15\%, link length $\pm$5\%, friction $\pm$20\%, damping $\pm$30\%.
+
+\textbf{Changes:} Abstract (damping $\pm$30\% added); Algorithm~1 pseudocode (scaling factors unified); Section~3 design rationale (friction/damping ranges added); Appendix table (inertia corrected to $\pm$15\%, new Friction/Damping rows); source code corrected. Specific changes:
+
+\begin{table}[h]
+\centering\small
+\caption*{\textbf{Specific changes}}
+\begin{tabular}{p{0.28\textwidth}p{0.3\textwidth}p{0.3\textwidth}}
+\toprule
+Location & Before & After \\
+\midrule
+Abstract (L76) & ``inertia ($\pm$15\%) and friction ($\pm$20\%)'' & ``inertia ($\pm$15\%), friction ($\pm$20\%), and damping ($\pm$30\%)'' \\
+Algorithm~1 pseudocode & $c_{\mathrm{fric}} \sim U(0.05,0.15)$ & $\alpha_{\mathrm{friction}} \sim U(0.8,1.2)$ ($\pm$20\%) \\
+Appendix table & Inertia range $\pm$10\% & $\pm$15\% + Friction $\pm$20\% + Damping $\pm$30\% \\
+Source code & inertia\_scale: (0.95, 1.05) & (0.85, 1.15) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+We have also ensured that the robustness stress-test ranges (Section~4.4.2: $\pm$20\% mass/inertia, $\pm$50\% friction) are clearly distinguished from the training perturbation ranges.
+
+\textbf{Revised manuscript excerpts (highlighted in blue):}
+
+1) Algorithm~1 --- Unified perturbation ranges:
+\begin{quote}\color{blue}\small
+$\alpha_{\mathrm{mass}} \sim \mathcal{U}(0.9, 1.1)$ \hfill (mass $\pm$10\%)\\
+$\alpha_{\mathrm{length}} \sim \mathcal{U}(0.95, 1.05)$ \hfill (link length $\pm$5\%)\\
+$\alpha_{\mathrm{inertia}} \sim \mathcal{U}(0.85, 1.15)$ \hfill (inertia $\pm$15\%)\\
+$\alpha_{\mathrm{friction}} \sim \mathcal{U}(0.8, 1.2)$ \hfill (friction scale $\pm$20\%)\\
+$\alpha_{\mathrm{damping}} \sim \mathcal{U}(0.7, 1.3)$ \hfill (damping scale $\pm$30\%)
+\end{quote}
+
+2) Abstract --- Damping range added:
+\begin{quote}\color{blue}\small
+[\ldots] we generate 232 physically valid training variants via bounded perturbations of mass ($\pm$10\%), inertia ($\pm$15\%), friction ($\pm$20\%), and damping ($\pm$30\%).
+\end{quote}
+
+%% --- R2.3 ---
+\subsection*{R2.3 --- Position Control Limitation}
+
+\reviewercomment{In the experiments, the simulator operates in position-control mode (using the built-in PD loop). Because this internal loop can automatically compensate for tracking errors by generating torque, the reported robustness to mass, inertia, and friction mismatches may partly reflect the compensation effect of the inner loop rather than solely relying on the proposed Meta-LF-PID / RL adjustment mechanism. The authors should add a paragraph discussing limitations and applicability boundaries, clarifying that the current conclusions are primarily valid for position-control settings, and briefly note possible differences under torque-control.}
+
+\response
+We fully agree and have added explicit discussion at three points in the revised manuscript:
+
+\begin{enumerate}[leftmargin=*, label=\arabic*)]
+\item Mechanism clarification (Section~3): We now explain PyBullet's built-in PD servo and note that this is analogous to industrial robot controllers accepting position commands from an outer planning layer.
+
+\item Balanced assessment (Section~6.1): The ``Factors Favoring Sim-to-Real Transfer'' item on position control has been revised to acknowledge the dual nature: ``the simulator's internal PD loop provides inherent disturbance rejection [\ldots] so the reported robustness gains partly reflect the combined outer-plus-inner control architecture.''
+
+\item Dedicated limitation paragraph (Section~6.3): Makes three key points: (i)~the absolute improvement attributable to the proposed method may be smaller under torque control; (ii)~the \emph{relative} ranking among baselines remains valid since all share the same inner PD loop; (iii)~extending to torque-control mode is identified as important future work.
+\end{enumerate}
+
+\textbf{Changes:} Section~3 simulation environment (PD servo mechanism clarification); Section~6.1 ``Factors Favoring Sim-to-Real Transfer'' (balanced assessment); Section~6.3 new ``Position control implications'' paragraph.
+
+\textbf{Revised manuscript excerpts (highlighted in blue):}
+
+1) Section~3 --- Mechanism clarification:
+\begin{quote}\color{blue}\small
+In this mode, PyBullet's built-in PD servo converts desired joint positions into motor torques via an internal proportional-derivative loop, abstracting away gravity compensation and low-level dynamics. This is analogous to industrial robot controllers that accept position commands from an outer planning layer. Importantly, the internal PD loop provides a baseline level of disturbance rejection independently of the outer LF-PID controller; the implications of this coupling are discussed in Section~6.
+\end{quote}
+
+2) Section~6.1 --- Balanced assessment:
+\begin{quote}\color{blue}\small
+However, this also means that the simulator's internal PD loop provides inherent disturbance rejection, so the reported robustness gains partly reflect the combined outer-plus-inner control architecture rather than the outer LF-PID/RL layer alone.
+\end{quote}
+
+3) Section~6.3 --- Dedicated limitation paragraph:
+\begin{quote}\color{blue}\small
+\textbf{Position control implications:} All experiments use PyBullet's position control mode, in which a built-in PD servo converts target joint positions to motor torques. This internal loop inherently compensates for part of the dynamics mismatch (gravity, Coriolis, friction), meaning that the robustness improvements reported in Section~5 reflect the \textit{combined} performance of the outer Meta-LF-PID/RL layer and the inner PD servo, rather than the outer layer in isolation. Consequently, the absolute magnitude of improvement attributable to the proposed method may be smaller under torque-control settings where no such inner-loop compensation exists. We emphasize two mitigating factors: (i)~the \textit{relative} ranking among baselines remains valid because all methods share the same inner PD loop; (ii)~position-level control is the predominant interface for commercial manipulators and legged-robot locomotion stacks, so our evaluation setting reflects common industrial practice. Nevertheless, extending the framework to torque-control mode [\ldots] is an important direction for broadening applicability.
+\end{quote}
+
+%% --- R2.4 ---
+\subsection*{R2.4 --- 30$^\circ$ Threshold Sensitivity Analysis}
+
+\reviewercomment{The exclusion of samples with optimization errors greater than 30$^\circ$ may systematically remove challenging cases, potentially overestimating generalization performance. The source and justification for this threshold are not provided, and no sensitivity analysis is shown. It is recommended that the authors provide a stability-based rationale for the threshold selection and analyze the sensitivity of performance to different thresholds (e.g., 10$^\circ$, 20$^\circ$, 30$^\circ$, 40$^\circ$) to demonstrate how the choice affects final results.}
+
+\response
+We have added both a stability-based rationale and a comprehensive sensitivity analysis.
+
+1) Stability-based rationale (Section~3): For sinusoidal reference trajectories with amplitude $A \in [0.2, 0.8]$\,rad, a 30$^\circ$ (0.52\,rad) RMS error corresponds to normalized tracking fidelity below 35\%, indicating the closed-loop system has effectively lost meaningful trajectory tracking.
+
+2) Sensitivity analysis (new table in Section~3):
+
+\begin{table}[h]
+\centering\small
+\caption*{\textbf{Threshold sensitivity analysis}}
+\begin{tabular}{ccccc}
+\toprule
+Threshold & Retained & Mean Error ($^\circ$) & NMAE (\%) & Downstream MAE ($^\circ$) \\
+\midrule
+10$^\circ$ & 98  & 6.2$\pm$2.1  & 52.8 & 9.14 \\
+20$^\circ$ & 178 & 9.8$\pm$4.7  & 48.3 & 8.02 \\
+\textbf{30$^\circ$} & \textbf{232} & \textbf{13.9$\pm$8.4} & \textbf{47.1} & \textbf{7.51} \\
+40$^\circ$ & 268 & 16.5$\pm$10.2 & 49.6 & 7.89 \\
+No filter  & 303 & 19.1$\pm$12.8 & 55.4 & 8.73 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The downstream MAE exhibits a \textbf{U-shaped response}: overly strict thresholds discard challenging-but-learnable samples, while relaxed thresholds admit noisy, uncontrollable samples. The 30$^\circ$ threshold sits at the minimum, achieving the optimal quality--diversity trade-off.
+
+\textbf{Changes:} Section~3 controllability criterion (stability-based rationale added); new Table~1 in Section~3 (threshold sensitivity analysis, 5~levels); Section~6.2 (U-shaped quality--diversity trade-off analysis).
+
+\textbf{Revised manuscript excerpts (highlighted in blue):}
+
+1) Section~3 --- Stability-based rationale:
+\begin{quote}\color{blue}\small
+This threshold is derived from a stability-based criterion: for sinusoidal reference trajectories with amplitude $A \in [0.2, 0.8]$\,rad, a 30$^\circ$ (0.52\,rad) RMS error corresponds to a normalized tracking fidelity below 35\%, indicating that the controller fails to maintain meaningful trajectory following. At this error level, the closed-loop system operates near the boundary of the linear stability region of the PD inner loop, where position-control mode may exhibit limit-cycle behavior. Sensitivity to this threshold choice is analyzed in Table~1.
+\end{quote}
+
+2) Section~6.2 --- U-shaped analysis:
+\begin{quote}\color{blue}\small
+The 30$^\circ$ threshold achieves the optimal balance: it retains sufficient diversity (232 samples, 76.6\% of total) while excluding pathologically uncontrollable configurations. Stricter thresholds (10$^\circ$, 20$^\circ$) aggressively prune challenging but learnable samples, reducing dataset diversity and degrading downstream performance. Conversely, relaxing to 40$^\circ$ or removing the filter introduces noisy, uncontrollable samples that corrupt the meta-learning landscape. The resulting U-shaped curve in downstream MAE confirms that 30$^\circ$ sits at the minimum of the quality--diversity trade-off.
+\end{quote}
+
+%% --- R2.5 ---
+\subsection*{R2.5 --- Ceiling Effect Quantification}
+
+\reviewercomment{The paper lists ``identifying an optimization ceiling effect that characterizes when RL refinement is most beneficial'' as a contribution. Currently, the description of the ``ceiling'' is mainly qualitative. It is suggested to introduce clearer metrics (e.g., RL gain rate) and demonstrate their correlation with RL improvement.}
+
+\response
+We have formalized the ceiling effect with a quantitative metric, summary table, and scatter plot:
+
+1) RL Gain Rate metric (Section~4):
+\[
+G_{\mathrm{RL},j} = \frac{e_{\mathrm{base},j} - e_{\mathrm{RL},j}}{e_{\mathrm{base},j}} \times 100\%
+\]
+
+2) Quantitative ceiling effect analysis (Section~6.2):
+
+\begin{table}[h]
+\centering\small
+\caption*{\textbf{Ceiling effect quantification}}
+\begin{tabular}{lcc}
+\toprule
+Metric & Franka (9-DOF) & Laikago (12-DOF) \\
+\midrule
+Baseline MAE & 7.51$^\circ$ & 5.91$^\circ$ \\
+Platform $G_{\mathrm{RL}}$ & \textbf{16.6\%} & 2.1\% \\
+Baseline $\mathrm{CV}_e$ & 0.457 & 0.630 \\
+Max $G_{\mathrm{RL},j}$ & 80.4\% (J2) & 7.6\% (J11) \\
+Joints with $G_{\mathrm{RL},j} < 0$ & 0/9 & 6/12 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+3) Scatter plot (new Figure): Per-joint $G_{\mathrm{RL},j}$ vs.\ baseline error for all 21 joints. Key finding: Franka J2 is the sole high-gain outlier ($G_{\mathrm{RL}}=80.4\%$ at $e_{\mathrm{base}}=12.36^\circ$); Laikago joints cluster in the ``ceiling zone'' with 6/12 showing negative $G_{\mathrm{RL}}$. Spearman $\rho_s = 0.38$ ($n=21$).
+
+4) Practical deployment criteria: (i)~deploy RL when any $e_{\mathrm{base},j} > 10^\circ$; (ii)~assess structural vs.\ genuine outlier heterogeneity; (iii)~weigh marginal $G_{\mathrm{RL}}$ against RL training cost.
+
+\textbf{Changes:} New $G_{\mathrm{RL}}$ definition (Eq.) in Section~5; new ceiling-effect quantification table and scatter plot in Section~6.2; Practical Deployment Criteria in Section~6.2; contributions list updated; 5~new symbols added to nomenclature table.
+
+\textbf{Revised manuscript excerpts (highlighted in blue):}
+
+1) Section~5 --- $G_{\mathrm{RL}}$ definition:
+\begin{quote}\color{blue}\small
+To quantify the optimization ceiling effect, we define the \textbf{RL gain rate} for each joint $j$:
+$G_{\mathrm{RL},j} = (e_{\mathrm{base},j} - e_{\mathrm{RL},j}) / e_{\mathrm{base},j} \times 100\%$,
+where $e_{\mathrm{base},j}$ and $e_{\mathrm{RL},j}$ denote the Meta-LF-PID and Meta-LF-PID+RL tracking errors for joint $j$, respectively. At the platform level, the aggregate gain rate is $G_{\mathrm{RL}} = (\bar{e}_{\mathrm{base}} - \bar{e}_{\mathrm{RL}}) / \bar{e}_{\mathrm{base}} \times 100\%$.
+\end{quote}
+
+2) Section~6.2 --- Key quantitative findings:
+\begin{quote}\color{blue}\small
+\textit{Franka Panda}: $G_{\mathrm{RL}} = 16.6\%$, driven almost entirely by Joint 2 ($G_{\mathrm{RL},2} = 80.4\%$). Removing J2, the remaining 8 joints average only $G_{\mathrm{RL}} = 3.3\%$. This confirms that RL's value is concentrated on \textit{localized deficiency correction} rather than uniform improvement.
+
+\textit{Laikago}: $G_{\mathrm{RL}} = 2.1\%$, with 6 out of 12 joints showing \textit{negative} $G_{\mathrm{RL}}$ (median $-0.6\%$). Despite having higher baseline $\mathrm{CV}_e$ (0.630 vs.\ 0.457), Laikago's error heterogeneity is \textit{structurally repetitive}---each leg replicates the same hip ($\sim$1.4$^\circ$) / knee ($\sim$6$^\circ$) / ankle ($\sim$10.5$^\circ$) pattern---rather than exhibiting genuine outlier joints.
+
+\textit{Cross-platform correlation}: Spearman $\rho_s = 0.38$ ($n = 21$ joints) indicates a moderate positive association between baseline error magnitude and RL gain rate.
+\end{quote}
+
+3) Section~6.2 --- Practical Deployment Criteria:
+\begin{quote}\color{blue}\small
+\begin{enumerate}
+    \item \textit{Joint-level criterion}: Deploy RL when any joint exhibits $e_{\mathrm{base},j} > 10^\circ$ and $G_{\mathrm{RL},j}$ is expected to exceed 5\%.
+    \item \textit{Platform-level criterion}: If no individual joint exceeds the above threshold, assess whether the baseline error distribution contains genuine \textit{non-structural outliers}. Structurally repetitive error patterns suggest meta-learning alone is sufficient.
+    \item \textit{Cost-benefit assessment}: Even when $G_{\mathrm{RL}} > 0$, the marginal improvement should be weighed against the RL training cost (1M steps $\approx$ 10\,min). For platforms where median $G_{\mathrm{RL},j} < 1\%$, the additional training overhead may not be justified.
+\end{enumerate}
+\end{quote}
+
+%% --- R2.6 ---
+\subsection*{R2.6 --- $\theta_{\mathrm{meta}}$ Definition vs.\ Figure~1 Inconsistency}
+
+\reviewercomment{There is inconsistency in defining the meta-learning network outputs. The manuscript defines the initialization parameters as $\bm{\theta}_{\mathrm{meta}}=[\bar{K}, s, c]$ and states that RL fine-tunes only $s$ while $\bar{K}$ and $c$ remain fixed. However, near Figure~1 the network output is described as containing only $[s, c]$, omitting $\bar{K}$. Please ensure consistency between Figure~1 and the main text: clarify whether $\bar{K}$ is predicted by the network; if not, specify its source and how it is set, and update the figure caption and related descriptions accordingly.}
+
+\response
+We completely redrawn Figure~1 to match the authoritative text definition:
+
+\begin{table}[h]
+\centering\small
+\caption*{\textbf{Figure 1 corrections}}
+\begin{tabular}{p{0.15\textwidth}p{0.35\textwidth}p{0.35\textwidth}}
+\toprule
+Element & Before & After \\
+\midrule
+Title & ``Meta-PID Network'' & ``Meta-LF-PID Network'' \\
+Output heads & $K_p$ (7D) / $K_i$ (7D) / $K_d$ (7D) & Base Gains $\bar{K}$ ($3n$) / Scales $s$ ($3n$) / TS Conseq.\ $c$ ($d_c$) \\
+Loss label & $N=303$ & $N=232$ (filtered) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The updated figure, caption, and nomenclature table are now consistent with the text definition $\bm{\theta}_{\mathrm{meta}} = [\bar{K}, s, c]$.
+
+\textbf{Changes:} Figure~1 TikZ source completely redrawn (title, output heads, loss label, $N$); Figure~1 caption expanded with three-head description; nomenclature table updated ($N=232$, 5~new ceiling-effect metrics).
+
+\textbf{Revised manuscript text (Figure~1 caption, highlighted in blue):}
+\begin{quote}\color{blue}\small
+Meta-learning network architecture for LF-PID initialization. The network maps 10D robot features $\mathbf{f}$ to the complete LF-PID parameter vector $\hat{\bm{\theta}} = [\hat{\bar{\bm{K}}}, \hat{\bm{s}}, \hat{\bm{c}}] \in [0,1]^D$ ($D=330n$) via three structured output heads: base gains $\bar{\bm{K}} \in \mathbb{R}^{3n}$, input scaling factors $\bm{s} \in \mathbb{R}^{3n}$, and TS consequent parameters $\bm{c} \in \mathbb{R}^{d_c}$. Sigmoid activation ensures bounded outputs; denormalization maps to physical ranges.
+\end{quote}
+
+Additionally, the nomenclature table has been updated: $N$ changed from ``Number of samples / 303'' to ``\rev{Number of training samples (filtered) / 232}'', and five new ceiling effect metrics ($\rev{G_{\mathrm{RL},j}}$, $\rev{G_{\mathrm{RL}}}$, $\rev{\mathrm{CV}_e}$, $\rev{e_{\mathrm{base},j}}$, $\rev{e_{\mathrm{RL},j}}$) have been added.
+
+%% =========================================================================
+\section*{Editor Comments}
+
+\subsection*{Template Conversion \& Highlighting}
+
+\reviewercomment{Please use the Robotica journal template (ROB-New.cls).}
+
+\response
+We have converted the entire manuscript to the official Robotica \texttt{ROB-New.cls} template format. All tables, figure captions, author/affiliation formatting, abstract environment, keyword formatting, end-matter declarations (Author Contributions, Ethical Standards, etc.), and bibliography style have been adapted. Compilation verified with \texttt{pdflatex}. All modifications are highlighted in {\color{blue}blue} in the revised manuscript using the \verb|\rev{...}| command for inline changes and \verb|{\color{blue} ...}| for block-level changes ($\sim$30 locations across all sections).
+
+\bigskip
+\hrule
+\bigskip
+\begin{center}
+\textit{End of Response Letter}
+\end{center}
+
+\end{document}

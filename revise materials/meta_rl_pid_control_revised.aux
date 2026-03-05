@@ -1,0 +1,285 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
+\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldcontentsline\contentsline
+\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
+\global\let\oldnewlabel\newlabel
+\gdef\newlabel#1#2{\newlabelxx{#1}#2}
+\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\contentsline\oldcontentsline
+\let\newlabel\oldnewlabel
+\fi}
+\fi}
+\global\let\hyper@last\relax 
+\gdef\HyperFirstAtBeginDocument#1{#1}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{astrom2006advanced}
+\citation{vilanova2012pid,johnson2021industrial}
+\@writefile{toc}{\@ifundefined {etoctocstyle}{\let \etoc@startlocaltoc \@gobble \let \etoc@settocdepth \@gobble \let \etoc@depthtag \@gobble \let \etoc@setlocaltop \@gobble }{}}
+\Newlabel{1}{1}
+\Newlabel{2}{2}
+\Newlabel{3}{3}
+\citation{gaing2004particle,berkenkamp2016safe}
+\citation{lillicrap2015continuous}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{2}{section.0.1}\protected@file@percent }
+\newlabel{sec:intro}{{1}{2}{Introduction}{section.0.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Motivation: Cross-Platform Tuning Under Dynamics Mismatch}{2}{subsection.0.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Proposed Solution and Key Contributions}{2}{subsection.0.1.2}\protected@file@percent }
+\citation{zhang2024disturbance}
+\citation{gaing2004particle}
+\citation{trelea2003particle}
+\citation{berkenkamp2016safe}
+\citation{lillicrap2015continuous}
+\citation{schulman2017proximal}
+\citation{nagabandi2018neural}
+\citation{yu2021adaptive}
+\citation{jiang2022rl}
+\citation{pezzato2020active}
+\citation{hospedales2021meta}
+\citation{finn2017model}
+\citation{finn2017one}
+\citation{yu2020meta}
+\citation{he2024self}
+\citation{tobin2017domain}
+\citation{peng2018sim}
+\citation{kumar2021rma}
+\citation{okamoto2021robust}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.3}Paper Organization}{3}{subsection.0.1.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{3}{section.0.2}\protected@file@percent }
+\newlabel{sec:related}{{2}{3}{Related Work}{section.0.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}PID and Fuzzy PID Tuning}{3}{subsection.0.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Learning-Based Control}{3}{subsection.0.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Meta-Learning for Robotics}{3}{subsection.0.2.3}\protected@file@percent }
+\citation{shorten2019survey}
+\citation{todorov2012mujoco}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Data Augmentation in Robotics}{4}{subsection.0.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Gap in Literature}{4}{subsection.0.2.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Methodology}{4}{section.0.3}\protected@file@percent }
+\newlabel{sec:methodology}{{3}{4}{Methodology}{section.0.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Problem Formulation}{4}{subsection.0.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.1}Learnable Fuzzy Gain-Scheduled PID (LF-PID) Formulation}{4}{subsubsection.0.3.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.2}Optimization Objective}{5}{subsubsection.0.3.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Hierarchical Meta-RL Architecture}{5}{subsection.0.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.1}Stage 1: Meta-Learning for LF-PID Initialization}{6}{subsubsection.0.3.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.2}Stage 2: Reinforcement Learning for Online Adaptation}{6}{subsubsection.0.3.2.2}\protected@file@percent }
+\citation{schulman2017proximal}
+\citation{iso9283}
+\citation{cho2019identification}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Physics-Based Data Augmentation}{7}{subsection.0.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}Augmentation Procedure}{7}{subsubsection.0.3.3.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces {\color  {blue}Meta-learning network architecture for LF-PID initialization. The network maps 10D robot features $\mathbf  {f}$ to the complete LF-PID parameter vector $\hat  {\bm  {\theta }} = [\hat  {\bar  {\bm  {K}}}, \hat  {\bm  {s}}, \hat  {\bm  {c}}] \in [0,1]^D$ ($D=330n$) via three structured output heads: base gains $\bar  {\bm  {K}} \in \mathbb  {R}^{3n}$, input scaling factors $\bm  {s} \in \mathbb  {R}^{3n}$, and TS consequent parameters $\bm  {c} \in \mathbb  {R}^{d_c}$. Sigmoid activation ensures bounded outputs; denormalization maps to physical ranges.}\relax }}{8}{figure.0.1}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:meta_pid_arch}{{1}{8}{\rev {Meta-learning network architecture for LF-PID initialization. The network maps 10D robot features $\mathbf {f}$ to the complete LF-PID parameter vector $\hat {\bm {\theta }} = [\hat {\bar {\bm {K}}}, \hat {\bm {s}}, \hat {\bm {c}}] \in [0,1]^D$ ($D=330n$) via three structured output heads: base gains $\bar {\bm {K}} \in \mathbb {R}^{3n}$, input scaling factors $\bm {s} \in \mathbb {R}^{3n}$, and TS consequent parameters $\bm {c} \in \mathbb {R}^{d_c}$. Sigmoid activation ensures bounded outputs; denormalization maps to physical ranges.}\relax }{figure.0.1}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Physics-Based Data Augmentation\relax }}{9}{algorithm.1}\protected@file@percent }
+\newlabel{alg:augmentation}{{1}{9}{Physics-Based Data Augmentation\relax }{algorithm.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Sensitivity of controllability threshold on data quality and downstream meta-learning performance (Franka 7-DOF). Retained = number of virtual samples passing the filter out of 303 total. Downstream MAE is the meta-learning prediction error (degrees) on the held-out test set.\relax }}{9}{table.0.1}\protected@file@percent }
+\newlabel{tab:threshold_sensitivity}{{1}{9}{Sensitivity of controllability threshold on data quality and downstream meta-learning performance (Franka 7-DOF). Retained = number of virtual samples passing the filter out of 303 total. Downstream MAE is the meta-learning prediction error (degrees) on the held-out test set.\relax }{table.0.1}{}}
+\citation{storn1997differential}
+\citation{nelder1965simplex}
+\citation{hansen2003reducing}
+\citation{byrd1995limited}
+\citation{trelea2003particle}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2}Hybrid Optimization Strategy for LF-PID Parameters}{10}{subsubsection.0.3.3.2}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Hybrid LF-PID Optimization for Virtual Robots\relax }}{11}{algorithm.2}\protected@file@percent }
+\newlabel{alg:hybrid_optimization}{{2}{11}{Hybrid LF-PID Optimization for Virtual Robots\relax }{algorithm.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Pilot comparison of optimization algorithms on 20 representative virtual robots. All methods use identical simulation budget (2000-step trajectory evaluation). ``Obj.'' denotes the final objective $\mathcal  {L}_v(\theta ^*)$ in degrees. ``Evals'' denotes the number of objective function evaluations (each requiring one forward simulation).\relax }}{11}{table.0.2}\protected@file@percent }
+\newlabel{tab:optimizer_comparison}{{2}{11}{Pilot comparison of optimization algorithms on 20 representative virtual robots. All methods use identical simulation budget (2000-step trajectory evaluation). ``Obj.'' denotes the final objective $\mathcal {L}_v(\theta ^*)$ in degrees. ``Evals'' denotes the number of objective function evaluations (each requiring one forward simulation).\relax }{table.0.2}{}}
+\citation{coumans2016pybullet}
+\citation{frankaemika2021benchmark}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Implementation Details}{12}{subsection.0.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experimental Setup}{13}{section.0.4}\protected@file@percent }
+\newlabel{sec:experiments}{{4}{13}{Experimental Setup}{section.0.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Robot Platforms}{13}{subsection.0.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.1}Franka Panda Manipulator}{13}{subsubsection.0.4.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.2}Laikago Quadruped Robot}{13}{subsubsection.0.4.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Data Generation}{13}{subsection.0.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}Base Robots}{13}{subsubsection.0.4.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}Virtual Sample Generation}{13}{subsubsection.0.4.2.2}\protected@file@percent }
+\newlabel{fig:franka_base}{{2a}{14}{Franka Panda (9-DOF)\relax }{subfigure.0.2.1}{}}
+\newlabel{sub@fig:franka_base}{{a}{14}{Franka Panda (9-DOF)\relax }{subfigure.0.2.1}{}}
+\newlabel{fig:kuka_base}{{2b}{14}{KUKA LBR iiwa (7-DOF)\relax }{subfigure.0.2.2}{}}
+\newlabel{sub@fig:kuka_base}{{b}{14}{KUKA LBR iiwa (7-DOF)\relax }{subfigure.0.2.2}{}}
+\newlabel{fig:laikago_base}{{2c}{14}{Laikago (12-DOF)\relax }{subfigure.0.2.3}{}}
+\newlabel{sub@fig:laikago_base}{{c}{14}{Laikago (12-DOF)\relax }{subfigure.0.2.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Three base robot platforms serving as \textbf  {training data sources} for physics-based data augmentation in PyBullet simulation. (a) Franka Panda manipulator (9-DOF) with complex serial kinematics, (b) KUKA LBR iiwa redundant manipulator (7-DOF) offering enhanced dexterity, and (c) Laikago quadruped (12-DOF) with parallel leg structure. From these diverse platforms, we generate 303 virtual variants through systematic perturbation of physical parameters (mass,inertia, friction, damping), filtering to 232 high-quality samples for meta-learning training. \textbf  {Cross-platform validation is conducted on Franka Panda and Laikago}, which exhibit the greatest morphological differences (serial manipulator vs. parallel-legged quadruped), providing rigorous testing of generalization capability.\relax }}{14}{figure.0.2}\protected@file@percent }
+\newlabel{fig:base_robots}{{2}{14}{Three base robot platforms serving as \textbf {training data sources} for physics-based data augmentation in PyBullet simulation. (a) Franka Panda manipulator (9-DOF) with complex serial kinematics, (b) KUKA LBR iiwa redundant manipulator (7-DOF) offering enhanced dexterity, and (c) Laikago quadruped (12-DOF) with parallel leg structure. From these diverse platforms, we generate 303 virtual variants through systematic perturbation of physical parameters (mass,inertia, friction, damping), filtering to 232 high-quality samples for meta-learning training. \textbf {Cross-platform validation is conducted on Franka Panda and Laikago}, which exhibit the greatest morphological differences (serial manipulator vs. parallel-legged quadruped), providing rigorous testing of generalization capability.\relax }{figure.0.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Training Configuration}{14}{subsection.0.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Evaluation Protocol}{14}{subsection.0.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.1}Cross-Platform Generalization}{14}{subsubsection.0.4.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.2}Robustness Testing}{15}{subsubsection.0.4.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Baseline Methods and Comparative Framework}{15}{subsection.0.4.5}\protected@file@percent }
+\newlabel{sec:baselines}{{4.5}{15}{Baseline Methods and Comparative Framework}{subsection.0.4.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Baseline Design Summary.\relax }}{16}{table.0.3}\protected@file@percent }
+\newlabel{tab:baseline_summary}{{3}{16}{Baseline Design Summary.\relax }{table.0.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Results}{16}{section.0.5}\protected@file@percent }
+\newlabel{sec:results}{{5}{16}{Results}{section.0.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Cross-Platform Performance}{17}{subsection.0.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.1}Franka Panda Manipulator}{17}{subsubsection.0.5.1.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Performance on Franka Panda (9-DOF).\relax }}{17}{table.0.4}\protected@file@percent }
+\newlabel{tab:franka_results}{{4}{17}{Performance on Franka Panda (9-DOF).\relax }{table.0.4}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.2}Laikago Quadruped Robot}{17}{subsubsection.0.5.1.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Performance on Laikago (12-DOF).\relax }}{17}{table.0.5}\protected@file@percent }
+\newlabel{tab:laikago_results}{{5}{17}{Performance on Laikago (12-DOF).\relax }{table.0.5}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.3}Per-Joint Error Analysis}{17}{subsubsection.0.5.1.3}\protected@file@percent }
+\newlabel{sec:per_joint_analysis}{{5.1.3}{17}{Per-Joint Error Analysis}{subsubsection.0.5.1.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Cross-platform generalization: Per-joint tracking error comparison across two morphologically distinct robot platforms. (a) Franka Panda serial manipulator (9-DOF) achieves 16.6\% overall improvement with exceptional gains in high-load joints (J2: +80.4\%, from 12.36° to 2.42°), demonstrating highly effective adaptation to manipulation tasks with concentrated loads. (b) Laikago parallel quadruped (12-DOF) achieves 2.1\% overall improvement, with individual joint improvements (+3.3\% to +7.7\% in 6 joints) slightly outweighing minor degradations (-3.7\% to -10.1\% in 6 joints). The contrast between platforms reveals an important engineering insight: RL adaptation excels when meta-learning exhibits localized high-error joints, while providing minimal benefit when baseline performance is uniformly strong. This guides practitioners to deploy RL selectively when additional refinement is warranted. Error bars indicate standard deviation.\relax }}{18}{figure.0.3}\protected@file@percent }
+\newlabel{fig:per_joint_error}{{3}{18}{Cross-platform generalization: Per-joint tracking error comparison across two morphologically distinct robot platforms. (a) Franka Panda serial manipulator (9-DOF) achieves 16.6\% overall improvement with exceptional gains in high-load joints (J2: +80.4\%, from 12.36° to 2.42°), demonstrating highly effective adaptation to manipulation tasks with concentrated loads. (b) Laikago parallel quadruped (12-DOF) achieves 2.1\% overall improvement, with individual joint improvements (+3.3\% to +7.7\% in 6 joints) slightly outweighing minor degradations (-3.7\% to -10.1\% in 6 joints). The contrast between platforms reveals an important engineering insight: RL adaptation excels when meta-learning exhibits localized high-error joints, while providing minimal benefit when baseline performance is uniformly strong. This guides practitioners to deploy RL selectively when additional refinement is warranted. Error bars indicate standard deviation.\relax }{figure.0.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Comprehensive tracking performance comparison on Franka Panda. (a) Actual tracking error time series showing 10.9\% improvement with RL adaptation—RL reduces tracking oscillations and peak errors by smoothing control responses, (b) Error distribution histograms demonstrating tighter error bounds with Meta-LF-PID+RL exhibiting more concentrated distribution around lower error values, (c) Per-joint error comparison with dual-axis visualization—left axis shows mean absolute error bars (Pure Meta-LF-PID in blue, Meta-LF-PID+RL in orange), right axis overlays improvement percentage curve (green line with markers) revealing Joint 2 benefits most with 80.4\% improvement; all 9 joints show positive gains averaging 12.1\%, and (d) Cumulative distribution function (CDF) showing consistent improvement across all error percentiles with 50th percentile improving by +10.5\% and 90th percentile by +11.0\%.\relax }}{19}{figure.0.4}\protected@file@percent }
+\newlabel{fig:actual_tracking}{{4}{19}{Comprehensive tracking performance comparison on Franka Panda. (a) Actual tracking error time series showing 10.9\% improvement with RL adaptation—RL reduces tracking oscillations and peak errors by smoothing control responses, (b) Error distribution histograms demonstrating tighter error bounds with Meta-LF-PID+RL exhibiting more concentrated distribution around lower error values, (c) Per-joint error comparison with dual-axis visualization—left axis shows mean absolute error bars (Pure Meta-LF-PID in blue, Meta-LF-PID+RL in orange), right axis overlays improvement percentage curve (green line with markers) revealing Joint 2 benefits most with 80.4\% improvement; all 9 joints show positive gains averaging 12.1\%, and (d) Cumulative distribution function (CDF) showing consistent improvement across all error percentiles with 50th percentile improving by +10.5\% and 90th percentile by +11.0\%.\relax }{figure.0.4}{}}
+\newlabel{eq:grl}{{21}{19}{Per-Joint Error Analysis}{equation.0.5.21}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.4}Cross-Platform Summary}{19}{subsubsection.0.5.1.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Per-Joint Tracking Error Comparison Across Platforms.\relax }}{20}{table.0.6}\protected@file@percent }
+\newlabel{tab:per_joint_error}{{6}{20}{Per-Joint Tracking Error Comparison Across Platforms.\relax }{table.0.6}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.5}Leave-One-Platform-Out Analysis}{21}{subsubsection.0.5.1.5}\protected@file@percent }
+\newlabel{sec:leave_one_out}{{5.1.5}{21}{Leave-One-Platform-Out Analysis}{subsubsection.0.5.1.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Leave-one-platform-out analysis: training data composition vs.\ evaluation performance. Laikago contributes at most 1 base configuration sample (0.4\% of training data), making the current evaluation a \textit  {de facto} leave-one-platform-out experiment for the most challenging inter-morphology case.\relax }}{21}{table.0.7}\protected@file@percent }
+\newlabel{tab:leave_one_out}{{7}{21}{Leave-one-platform-out analysis: training data composition vs.\ evaluation performance. Laikago contributes at most 1 base configuration sample (0.4\% of training data), making the current evaluation a \textit {de facto} leave-one-platform-out experiment for the most challenging inter-morphology case.\relax }{table.0.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Robustness evaluation across five disturbance scenarios on Franka Panda (20 episodes per scenario, evaluated across 100 random seeds for stochastic validation). Subplots (a-c) show detailed results for representative seed 51 (near-median performance), while subplot (d) presents the complete statistical distribution across all 100 seeds (mean±std: 4.81±1.64\% average improvement). The method achieves universal improvements across all tested conditions, with exceptional performance under parameter uncertainties (+19.2\%, from 35.90° to 29.01°), demonstrating remarkable adaptability to model discrepancies. Consistent gains in no disturbance (+13.2\%), payload variations (+8.1\%), mixed disturbances (+6.4\%), and random forces (+2.9\%) validate the robustness of the hierarchical Meta-LF-PID+RL approach. Average improvement: +10.0\%.\relax }}{22}{figure.0.5}\protected@file@percent }
+\newlabel{fig:robustness}{{5}{22}{Robustness evaluation across five disturbance scenarios on Franka Panda (20 episodes per scenario, evaluated across 100 random seeds for stochastic validation). Subplots (a-c) show detailed results for representative seed 51 (near-median performance), while subplot (d) presents the complete statistical distribution across all 100 seeds (mean±std: 4.81±1.64\% average improvement). The method achieves universal improvements across all tested conditions, with exceptional performance under parameter uncertainties (+19.2\%, from 35.90° to 29.01°), demonstrating remarkable adaptability to model discrepancies. Consistent gains in no disturbance (+13.2\%), payload variations (+8.1\%), mixed disturbances (+6.4\%), and random forces (+2.9\%) validate the robustness of the hierarchical Meta-LF-PID+RL approach. Average improvement: +10.0\%.\relax }{figure.0.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Robustness Under Disturbances}{22}{subsection.0.5.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces Robustness Analysis (Franka Panda, MAE in $^\circ $, Representative Seed 51, 20 Episodes).\relax }}{22}{table.0.8}\protected@file@percent }
+\newlabel{tab:robustness}{{8}{22}{Robustness Analysis (Franka Panda, MAE in $^\circ $, Representative Seed 51, 20 Episodes).\relax }{table.0.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Practical Considerations}{23}{subsection.0.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Training Efficiency}{24}{subsection.0.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.4.1}Meta-Learning Convergence}{24}{subsubsection.0.5.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.4.2}RL Training Dynamics}{24}{subsubsection.0.5.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5}Ablation Studies}{24}{subsection.0.5.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.5.1}Impact of Data Augmentation}{24}{subsubsection.0.5.5.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces Ablation: Data Augmentation Impact.\relax }}{24}{table.0.9}\protected@file@percent }
+\newlabel{tab:ablation_aug}{{9}{24}{Ablation: Data Augmentation Impact.\relax }{table.0.9}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.5.2}Impact of RL Adaptation}{24}{subsubsection.0.5.5.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Comprehensive RL training dynamics monitoring dashboard for Franka Panda (9-DOF) over 1M timesteps using PPO algorithm with optimized hyperparameters. (a) Episode reward improves progressively, demonstrating effective learning. (b) Value function loss decreases logarithmically, indicating convergence. (c) Policy loss stabilizes, showing robust policy optimization. (d) Entropy decreases gradually, showing the transition from exploration to exploitation. (e) Explained variance increases, validating effective value learning. (f) Clip fraction remains in the healthy range (0.05-0.15), confirming appropriate PPO hyperparameters. (g) Learning rate stays constant at $1 \times 10^{-4}$. (h) Gradient norm decreases and stabilizes below 0.5, indicating training stability.\relax }}{25}{figure.0.6}\protected@file@percent }
+\newlabel{fig:rl_training}{{6}{25}{Comprehensive RL training dynamics monitoring dashboard for Franka Panda (9-DOF) over 1M timesteps using PPO algorithm with optimized hyperparameters. (a) Episode reward improves progressively, demonstrating effective learning. (b) Value function loss decreases logarithmically, indicating convergence. (c) Policy loss stabilizes, showing robust policy optimization. (d) Entropy decreases gradually, showing the transition from exploration to exploitation. (e) Explained variance increases, validating effective value learning. (f) Clip fraction remains in the healthy range (0.05-0.15), confirming appropriate PPO hyperparameters. (g) Learning rate stays constant at $1 \times 10^{-4}$. (h) Gradient norm decreases and stabilizes below 0.5, indicating training stability.\relax }{figure.0.6}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.5.3}Component Analysis}{25}{subsubsection.0.5.5.3}\protected@file@percent }
+\citation{cho2019identification,lee2022parameter}
+\citation{tan2018sim,margolis2024rapid}
+\citation{frankaemika2021benchmark,ott2017unified}
+\citation{cho2019identification}
+\citation{collins2021review}
+\citation{berkenkamp2021safe}
+\citation{zhao2020sim2real}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{26}{section.0.6}\protected@file@percent }
+\newlabel{sec:discussion}{{6}{26}{Discussion}{section.0.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Addressing Deployment Readiness Concerns}{26}{subsection.0.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.1}Potential for Real-World Deployment}{26}{subsubsection.0.6.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Key Insights}{26}{subsection.0.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.1}Physics-Based Augmentation Effectiveness}{26}{subsubsection.0.6.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.2}Data Quality Impact on Performance}{27}{subsubsection.0.6.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.3}RL Performance and Meta-Learning Baseline Quality: The Optimization Ceiling Effect}{27}{subsubsection.0.6.2.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces Quantitative characterization of the optimization ceiling effect. $G_{\mathrm  {RL}}$ = platform-level RL gain rate; $\mathrm  {CV}_e$ = coefficient of variation of baseline joint errors; Max $G_{\mathrm  {RL},j}$ = highest per-joint gain; Joints with $G_{\mathrm  {RL},j}<0$ = joints where RL slightly degrades performance.\relax }}{27}{table.0.10}\protected@file@percent }
+\newlabel{tab:ceiling_quantification}{{10}{27}{Quantitative characterization of the optimization ceiling effect. $G_{\mathrm {RL}}$ = platform-level RL gain rate; $\mathrm {CV}_e$ = coefficient of variation of baseline joint errors; Max $G_{\mathrm {RL},j}$ = highest per-joint gain; Joints with $G_{\mathrm {RL},j}<0$ = joints where RL slightly degrades performance.\relax }{table.0.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces {\color  {blue}Optimization ceiling effect: per-joint RL gain rate ($G_{\mathrm  {RL},j}$) vs.\ meta-learning baseline error ($e_{\mathrm  {base},j}$) across 21 joints of two robot platforms. The shaded region ($G_{\mathrm  {RL}} < 5\%$) indicates the ``ceiling zone'' where RL provides minimal additional benefit. Franka J2 (shoulder pitch, $e_{\mathrm  {base}}=12.36^\circ $) is the sole joint exhibiting dramatic RL improvement ($G_{\mathrm  {RL}}=80.4\%$), while most joints cluster in the ceiling zone regardless of their absolute error magnitude. Spearman rank correlation: $\rho _s = 0.38$, $n = 21$.}\relax }}{28}{figure.0.7}\protected@file@percent }
+\newlabel{fig:ceiling_scatter}{{7}{28}{\rev {Optimization ceiling effect: per-joint RL gain rate ($G_{\mathrm {RL},j}$) vs.\ meta-learning baseline error ($e_{\mathrm {base},j}$) across 21 joints of two robot platforms. The shaded region ($G_{\mathrm {RL}} < 5\%$) indicates the ``ceiling zone'' where RL provides minimal additional benefit. Franka J2 (shoulder pitch, $e_{\mathrm {base}}=12.36^\circ $) is the sole joint exhibiting dramatic RL improvement ($G_{\mathrm {RL}}=80.4\%$), while most joints cluster in the ceiling zone regardless of their absolute error magnitude. Spearman rank correlation: $\rho _s = 0.38$, $n = 21$.}\relax }{figure.0.7}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.4}Hierarchical Control Benefits}{28}{subsubsection.0.6.2.4}\protected@file@percent }
+\citation{margolis2024rapid}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.5}Cross-Platform Generalization}{29}{subsubsection.0.6.2.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Limitations and Future Work}{29}{subsection.0.6.3}\protected@file@percent }
+\newlabel{para:position_control}{{6.3}{29}{Limitations and Future Work}{subsection.0.6.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{30}{section.0.7}\protected@file@percent }
+\newlabel{sec:conclusion}{{7}{30}{Conclusion}{section.0.7}{}}
+\@writefile{toc}{\contentsline {paragraph}{Author Contributions}{30}{section*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Financial Support}{30}{section*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Competing Interests}{30}{section*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Data Availability Statement}{30}{section*.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Declaration of Generative AI and AI-Assisted Technologies}{30}{section*.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Acknowledgments}{30}{section*.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{Nomenclature}{31}{section*.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A}Hyperparameters and Training Configuration}{33}{section.AppA}\protected@file@percent }
+\newlabel{app:hyperparameters}{{A}{33}{Hyperparameters and Training Configuration}{section.AppA}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.1}Meta-Learning Network Training}{33}{subsection.AppA.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {11}{\ignorespaces Meta-Learning Network Hyperparameters.\relax }}{33}{table.0.11}\protected@file@percent }
+\newlabel{tab:meta_hyperparams}{{11}{33}{Meta-Learning Network Hyperparameters.\relax }{table.0.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2}PPO-Based RL Training}{34}{subsection.AppA.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {12}{\ignorespaces PPO Algorithm Hyperparameters.\relax }}{34}{table.0.12}\protected@file@percent }
+\newlabel{tab:ppo_hyperparams}{{12}{34}{PPO Algorithm Hyperparameters.\relax }{table.0.12}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.3}Data Augmentation and Optimization}{35}{subsection.AppA.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {13}{\ignorespaces Data Augmentation and LF-PID Optimization.\relax }}{35}{table.0.13}\protected@file@percent }
+\newlabel{tab:augmentation_params}{{13}{35}{Data Augmentation and LF-PID Optimization.\relax }{table.0.13}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.4}Reward Function and Environment}{35}{subsection.AppA.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {14}{\ignorespaces Reward Function and Environment.\relax }}{36}{table.0.14}\protected@file@percent }
+\newlabel{tab:reward_function}{{14}{36}{Reward Function and Environment.\relax }{table.0.14}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.5}Computing Infrastructure}{36}{subsection.AppA.5}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {15}{\ignorespaces Computing Infrastructure.\relax }}{36}{table.0.15}\protected@file@percent }
+\newlabel{tab:computing}{{15}{36}{Computing Infrastructure.\relax }{table.0.15}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.6}Random Seeds and Reproducibility}{36}{subsection.AppA.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {A.6.1}Training Seeds (Fixed)}{36}{subsubsection.AppA.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {A.6.2}Evaluation Seeds (Multi-Seed Analysis)}{37}{subsubsection.AppA.6.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {16}{\ignorespaces Multi-Seed Evaluation Configuration.\relax }}{37}{table.0.16}\protected@file@percent }
+\newlabel{tab:multi_seed_eval}{{16}{37}{Multi-Seed Evaluation Configuration.\relax }{table.0.16}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}Physical Validity Verification Protocols}{38}{section.AppB}\protected@file@percent }
+\newlabel{app:physical_validity}{{B}{38}{Physical Validity Verification Protocols}{section.AppB}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.1}Mass Matrix Positive-Definiteness Verification}{38}{subsection.AppB.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.2}Energy Drift Stability Test}{38}{subsection.AppB.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.3}Kolmogorov-Smirnov Distribution Comparison}{38}{subsection.AppB.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.4}PCA Variance Preservation}{39}{subsection.AppB.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {C}Computational Budget Alignment Across Methods}{39}{section.AppC}\protected@file@percent }
+\newlabel{app:budget_alignment}{{C}{39}{Computational Budget Alignment Across Methods}{section.AppC}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.1}Unified Computational Budget Table}{39}{subsection.AppC.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {17}{\ignorespaces Computational Resource Breakdown for All Methods.\relax }}{39}{table.0.17}\protected@file@percent }
+\newlabel{tab:budget_alignment}{{17}{39}{Computational Resource Breakdown for All Methods.\relax }{table.0.17}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {C.2}Budget Alignment Rationale}{39}{subsection.AppC.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {D}Ablation Study: RL Adaptation Subset Selection}{41}{section.AppD}\protected@file@percent }
+\newlabel{app:ablation_rl}{{D}{41}{Ablation Study: RL Adaptation Subset Selection}{section.AppD}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {D.1}Experimental Design}{41}{subsection.AppD.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {D.2}Results}{41}{subsection.AppD.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {18}{\ignorespaces Ablation: RL Adaptation Subset Performance on Franka Panda.\relax }}{41}{table.0.18}\protected@file@percent }
+\newlabel{tab:ablation_rl_subset}{{18}{41}{Ablation: RL Adaptation Subset Performance on Franka Panda.\relax }{table.0.18}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {D.3}Key Findings}{41}{subsection.AppD.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {E}Meta-Learning Generalization Analysis}{42}{section.AppE}\protected@file@percent }
+\newlabel{app:meta_generalization}{{E}{42}{Meta-Learning Generalization Analysis}{section.AppE}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {E.1}Overfitting Prevention Mechanisms}{42}{subsection.AppE.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {E.2}Generalization Evidence}{42}{subsection.AppE.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {19}{\ignorespaces Meta-Learning Train/Validation Performance.\relax }}{42}{table.0.19}\protected@file@percent }
+\newlabel{tab:meta_generalization}{{19}{42}{Meta-Learning Train/Validation Performance.\relax }{table.0.19}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {E.3}Alternative Architectures Considered}{42}{subsection.AppE.3}\protected@file@percent }
+\bibstyle{roblike}
+\bibcite{astrom2006advanced}{{1}{}{{}}{{}}}
+\bibcite{vilanova2012pid}{{2}{}{{}}{{}}}
+\@writefile{toc}{\contentsline {section}{\numberline {F}Reproducibility Checklist}{43}{section.AppF}\protected@file@percent }
+\newlabel{app:repro_checklist}{{F}{43}{Reproducibility Checklist}{section.AppF}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {F.1}Software and Hardware Environment}{43}{subsection.AppF.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {F.2}Random Seeds and Statistical Methodology}{43}{subsection.AppF.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {F.3}Key Hyperparameters}{43}{subsection.AppF.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {F.4}Data and Code Availability}{43}{subsection.AppF.4}\protected@file@percent }
+\bibcite{johnson2021industrial}{{3}{}{{}}{{}}}
+\bibcite{gaing2004particle}{{4}{}{{}}{{}}}
+\bibcite{berkenkamp2016safe}{{5}{}{{}}{{}}}
+\bibcite{lillicrap2015continuous}{{6}{}{{}}{{}}}
+\bibcite{zhang2024disturbance}{{7}{}{{}}{{}}}
+\bibcite{trelea2003particle}{{8}{}{{}}{{}}}
+\bibcite{schulman2017proximal}{{9}{}{{}}{{}}}
+\bibcite{nagabandi2018neural}{{10}{}{{}}{{}}}
+\bibcite{yu2021adaptive}{{11}{}{{}}{{}}}
+\bibcite{jiang2022rl}{{12}{}{{}}{{}}}
+\bibcite{pezzato2020active}{{13}{}{{}}{{}}}
+\bibcite{hospedales2021meta}{{14}{}{{}}{{}}}
+\bibcite{finn2017model}{{15}{}{{}}{{}}}
+\bibcite{finn2017one}{{16}{}{{}}{{}}}
+\bibcite{yu2020meta}{{17}{}{{}}{{}}}
+\bibcite{he2024self}{{18}{}{{}}{{}}}
+\bibcite{tobin2017domain}{{19}{}{{}}{{}}}
+\bibcite{peng2018sim}{{20}{}{{}}{{}}}
+\bibcite{kumar2021rma}{{21}{}{{}}{{}}}
+\bibcite{okamoto2021robust}{{22}{}{{}}{{}}}
+\bibcite{shorten2019survey}{{23}{}{{}}{{}}}
+\bibcite{todorov2012mujoco}{{24}{}{{}}{{}}}
+\bibcite{storn1997differential}{{25}{}{{}}{{}}}
+\bibcite{nelder1965simplex}{{26}{}{{}}{{}}}
+\bibcite{coumans2016pybullet}{{27}{}{{}}{{}}}
+\bibcite{iso9283}{{28}{}{{}}{{}}}
+\bibcite{cho2019identification}{{29}{}{{}}{{}}}
+\bibcite{lee2022parameter}{{30}{}{{}}{{}}}
+\bibcite{collins2021review}{{31}{}{{}}{{}}}
+\bibcite{tan2018sim}{{32}{}{{}}{{}}}
+\bibcite{margolis2024rapid}{{33}{}{{}}{{}}}
+\bibcite{frankaemika2021benchmark}{{34}{}{{}}{{}}}
+\bibcite{ott2017unified}{{35}{}{{}}{{}}}
+\bibcite{zhao2020sim2real}{{36}{}{{}}{{}}}
+\bibcite{openai2020learning}{{37}{}{{}}{{}}}
+\bibcite{berkenkamp2021safe}{{38}{}{{}}{{}}}
+\bibcite{andrychowicz2020learning}{{39}{}{{}}{{}}}
+\bibcite{hansen2003reducing}{{40}{}{{}}{{}}}
+\bibcite{byrd1995limited}{{41}{}{{}}{{}}}

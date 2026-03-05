@@ -1,0 +1,243 @@
+\begin{thebibliography}{99}
+
+\bibitem{bcg2023robotics}
+Boston Consulting Group, The Robotics Revolution: Closing the Talent Gap in Industrial Automation, BCG Henderson Institute, Boston, USA, 2023.
+
+
+\bibitem{ifr2023worldrobotics}
+International Federation of Robotics, World Robotics 2023: Industrial Robots Report, IFR Statistical Department, Frankfurt, Germany, 2023.
+
+
+\bibitem{astrom2006advanced}
+K.~J. Åström, T.~Hägglund, Advanced PID Control, ISA-The Instrumentation, Systems, and Automation Society, 2006.
+
+
+\bibitem{vilanova2012pid}
+R.~Vilanova, A.~Visioli, PID Control in the Third Millennium: Lessons Learned and New Approaches, Springer-Verlag, London, UK, 2012.
+
+
+\bibitem{johnson2021industrial}
+C.~D. Johnson, M.~A. Franchek, Real-world challenges in industrial robot controller tuning: A case study analysis, IEEE Trans. Autom. Sci. Eng. 18~(3) (2021) 1456--1468.
+
+
+\bibitem{ieee2023salary}
+IEEE Robotics and Automation Society, 2023 Global Salary Survey: Control Systems Engineers, IEEE-RAS Industry Relations Committee, Piscataway, USA, 2023.
+
+
+\bibitem{deloitte2023manufacturing}
+Deloitte Insights, Manufacturing Talent Shortage: The \$2.1 Trillion Challenge, Deloitte Development LLC, London, UK, 2023.
+
+
+\bibitem{lillicrap2015continuous}
+T.~P. Lillicrap, J.~J. Hunt, A.~Pritzel, N.~Heess, T.~Erez, Y.~Tassa, D.~Silver, D.~Wierstra, Continuous control with deep reinforcement learning, arXiv preprint arXiv:1509.02971 (2015).
+
+
+\bibitem{gaing2004particle}
+Z.-L. Gaing, A particle swarm optimization approach for optimum design of PID controller in AVR system, IEEE Trans. Energy Convers. 19~(2) (2004) 384--391.
+
+
+\bibitem{berkenkamp2016safe}
+F.~Berkenkamp, A.~P. Schoellig, A.~Krause, Safe controller optimization for quadrotors with Gaussian processes, in: Proc. IEEE ICRA, 2016, pp. 491--496.
+
+
+\bibitem{zhang2024disturbance}
+Y.~Zhang, B.~Nie, Z.~Cao, Y.~Fu, Y.~Gao, Disturbance-aware adaptive compensation in hybrid force-position locomotion policy for legged robots, in: Proc. IEEE ICRA, 2024, arXiv:2506.00472.
+
+
+\bibitem{trelea2003particle}
+I.~C. Trelea, The particle swarm optimization algorithm: convergence analysis and parameter selection, Inf. Process. Lett. 85~(6) (2003) 317--325.
+
+
+\bibitem{schulman2017proximal}
+J.~Schulman, F.~Wolski, P.~Dhariwal, A.~Radford, O.~Klimov, Proximal policy optimization algorithms, arXiv preprint arXiv:1707.06347 (2017).
+
+
+\bibitem{nagabandi2018neural}
+A.~Nagabandi, G.~Kahn, R.~S. Fearing, S.~Levine, Neural network dynamics for model-based deep reinforcement learning with model-free fine-tuning, in: Proc. IEEE ICRA, 2018, pp. 7559--7566.
+
+
+\bibitem{yu2021adaptive}
+X.~Yu, P.~He, Z.~Wan, A.~Tsukada, An adaptive SAC-PID control method based on reinforcement learning for mobile robots, in: Proc. IEEE ICRA, 2021, arXiv:2103.10686.
+
+
+\bibitem{jiang2022rl}
+D.~Jiang, Z.~Li, Y.~Xia, Reinforcement learning based adaptive tracking control for continuum robots, J. System Simulation 34~(7) (2022) 1465--1475. (in Chinese)
+
+
+\bibitem{pezzato2020active}
+C.~Pezzato, R.~Ferrari, C.~Hernandez Corbato, A novel adaptive controller for robot manipulators based on active inference, IEEE Robotics Autom. Lett. 5~(2) (2020) 2973--2980.
+
+
+\bibitem{hospedales2021meta}
+T.~Hospedales, A.~Antoniou, P.~Micaelli, A.~Storkey, Meta-learning in neural networks: A survey, IEEE Trans. Pattern Anal. Mach. Intell. 44~(9) (2022) 5149--5169.
+
+
+\bibitem{finn2017model}
+C.~Finn, P.~Abbeel, S.~Levine, Model-agnostic meta-learning for fast adaptation of deep networks, in: Proc. ICML, 2017, pp. 1126--1135.
+
+
+\bibitem{finn2017one}
+C.~Finn, T.~Yu, T.~Zhang, P.~Abbeel, S.~Levine, One-shot visual imitation learning via meta-learning, in: Proc. CoRL, 2017, pp. 357--368.
+
+
+\bibitem{yu2020meta}
+W.~Yu, C.~K. Liu, G.~Turk, Meta-world: A benchmark and evaluation for multi-task and meta reinforcement learning, in: Proc. CoRL, 2020, pp. 1094--1100.
+
+
+\bibitem{he2024self}
+W.~He, Y.~Hu, Y.~Guan, M.~Xue, Self-supervised meta-learning for all-layer DNN-based adaptive control with stability guarantees, in: Proc. IEEE CDC, 2024, arXiv:2410.07575.
+
+
+\bibitem{tobin2017domain}
+J.~Tobin, R.~Fong, A.~Ray, J.~Schneider, W.~Zaremba, P.~Abbeel, Domain randomization for transferring deep neural networks from simulation to the real world, in: Proc. IEEE/RSJ IROS, 2017, pp. 23--30.
+
+
+\bibitem{peng2018sim}
+X.~B. Peng, M.~Andrychowicz, W.~Zaremba, P.~Abbeel, Sim-to-real transfer of robotic control with dynamics randomization, in: Proc. IEEE ICRA, 2018, pp. 3803--3810.
+
+
+\bibitem{kumar2021rma}
+A.~Kumar, Z.~Fu, D.~Pathak, J.~Malik, RMA: Rapid motor adaptation for legged robots, in: Proc. CoRL, 2021, pp. 1034--1045.
+
+
+\bibitem{okamoto2021robust}
+S.~Okamoto, S.~Nagano, M.~Kojima, Robust fault-tolerant control of quadruped robots using adaptive curriculum dynamic randomization, IEEE Access 9 (2021) 150385--150396.
+
+
+\bibitem{shorten2019survey}
+C.~Shorten, T.~M. Khoshgoftaar, A survey on image data augmentation for deep learning, J. Big Data 6~(1) (2019) 1--48.
+
+
+\bibitem{todorov2012mujoco}
+E.~Todorov, T.~Erez, Y.~Tassa, MuJoCo: A physics engine for model-based control, in: Proc. IEEE/RSJ IROS, 2012, pp. 5026--5033.
+
+
+\bibitem{storn1997differential}
+R.~Storn, K.~Price, Differential evolution -- A simple and efficient heuristic for global optimization over continuous spaces, J. Global Optim. 11~(4) (1997) 341--359.
+
+
+\bibitem{nelder1965simplex}
+J.~A. Nelder, R.~Mead, A simplex method for function minimization, Comput. J. 7~(4) (1965) 308--313.
+
+
+\bibitem{coumans2016pybullet}
+E.~Coumans, Y.~Bai, PyBullet, a Python module for physics simulation for games, robotics and machine learning, 2016. [Online]. Available: http://pybullet.org
+
+
+\bibitem{armbrust2010cloud}
+M.~Armbrust, A.~Fox, R.~Griffith, et al., A view of cloud computing, Commun. ACM 53~(4) (2010) 50--58.
+
+
+\bibitem{aws2023economics}
+Amazon Web Services, The Economics of Cloud Computing for Industrial Applications, AWS Industry White Paper, Seattle, USA, 2023.
+
+
+\bibitem{robotics2024smesurvey}
+Robotics Industries Association, SME Adoption Barriers Survey 2024: Cost and Expertise Challenges, RIA Research Division, Ann Arbor, USA, 2024.
+
+
+\bibitem{nist2023manufacturing}
+National Institute of Standards and Technology, Small Manufacturer Automation Case Studies: Economic Analysis, NIST Advanced Manufacturing Program, Gaithersburg, USA, 2023.
+
+
+\bibitem{upwork2024engineering}
+Upwork Research Institute, Global Freelance Engineering Rate Report Q1 2024: Control Systems \& Robotics, Upwork Inc., San Francisco, USA, 2024.
+
+
+\bibitem{accenture2023consulting}
+Accenture Strategy, Industrial Automation Consulting Market Analysis 2023, Accenture PLC, Dublin, Ireland, 2023.
+
+
+\bibitem{mit2024deployment}
+MIT Center for Transportation \& Logistics, Hidden Costs of Robotic Deployment: A Multi-Industry Study, Massachusetts Institute of Technology, Cambridge, USA, 2024.
+
+
+\bibitem{lean2023manufacturing}
+Lean Enterprise Institute, Production Downtime Cost Analysis: Electronics Manufacturing Sector, LEI Industry Benchmarks, Cambridge, USA, 2023.
+
+
+\bibitem{agile2024manufacturing}
+Agile Manufacturing Alliance, Rapid Scaling Strategies for SME Automation, AMA Best Practices Report, Chicago, USA, 2024.
+
+
+\bibitem{mckinsey2024automation}
+McKinsey Global Institute, The Future of Work: Automation, Employment, and Productivity in Manufacturing, McKinsey \& Company, New York, USA, 2024.
+
+
+\bibitem{iso9283}
+International Organization for Standardization, ISO 9283:1998 Manipulating Industrial Robots—Performance Criteria and Related Test Methods, ISO Standards, Geneva, Switzerland, 1998.
+
+
+\bibitem{cho2019identification}
+J.~Cho, S.~Kim, Parameter identification and model validation of industrial robot manipulators under manufacturing tolerances, Robotica 37~(10) (2019) 1656--1672.
+
+
+\bibitem{lee2022parameter}
+S.~Lee, H.~Park, J.~Kim, Real-world parameter uncertainty quantification in collaborative robots: An experimental study, IEEE Robotics Autom. Lett. 7~(4) (2022) 9847--9854.
+
+
+\bibitem{collins2021review}
+J.~Collins, S.~Chand, A.~Vanderkop, D.~Howard, A review of physics simulators for robotic applications, IEEE Access 9 (2021) 51416--51431.
+
+
+\bibitem{tan2018sim}
+J.~Tan, T.~Zhang, E.~Coumans, et al., Sim-to-real: Learning agile locomotion for quadruped robots, in: Proc. Robotics: Science and Systems (RSS), 2018.
+
+
+\bibitem{margolis2024rapid}
+G.~B. Margolis, T.~Yang, K.~Paigwar, X.~Chen, P.~Agrawal, Rapid locomotion via reinforcement learning, in: Proc. Robotics: Science and Systems (RSS), 2024, arXiv:2404.01063.
+
+
+\bibitem{frankaemika2021benchmark}
+Franka Emika GmbH, Franka Panda Performance Benchmarks: Position Control Accuracy in Industrial Settings, Technical Report FE-2021-03, Munich, Germany, 2021.
+
+
+\bibitem{ott2017unified}
+C.~Ott, A.~Dietrich, A.~Albu-Schäffer, Unified impedance and admittance control, in: Proc. IEEE ICRA, 2017, pp. 554--560.
+
+
+\bibitem{zhao2020sim2real}
+W.~Zhao, J.~P. Queralta, T.~Westerlund, Sim-to-real transfer in deep reinforcement learning for robotics: A survey, in: Proc. IEEE SSCI, 2020, pp. 737--744.
+
+
+\bibitem{openai2020learning}
+OpenAI et al., Learning dexterous in-hand manipulation, Int. J. Robotics Res. 39~(1) (2020) 3--20.
+
+
+\bibitem{berkenkamp2021safe}
+F.~Berkenkamp, A.~P. Schoellig, Safe exploration in reinforcement learning: Theory and applications in robotics, in: Proc. European Control Conference (ECC), 2021, pp. 1--19.
+
+
+\bibitem{andrychowicz2020learning}
+M.~Andrychowicz, B.~Baker, M.~Chociej, et al., Learning dexterous in-hand manipulation, Int. J. Robotics Res. 39~(1) (2020) 3--20.
+
+
+
+% ============================================================================
+% WARNING: The following 21 bibitems are NOT cited in the main text:
+% These should be removed unless intentionally kept
+% ============================================================================
+
+% UNCITED: aws2024regions
+% UNCITED: brookings2023innovation
+% UNCITED: brunke2022safe
+% UNCITED: darpa2023robotics
+% UNCITED: erez2015simulation
+% UNCITED: frankaemika2021specs
+% UNCITED: haddadin2017robot
+% UNCITED: hwangbo2019learning
+% UNCITED: itu2023connectivity
+% UNCITED: kuka2022performance
+% UNCITED: moore2023future
+% UNCITED: muratore2022robot
+% UNCITED: murphy2023disaster
+% UNCITED: nature2023editorials
+% UNCITED: opensource2024impact
+% UNCITED: ottobock2023pricing
+% UNCITED: polyani1966tacit
+% UNCITED: wef2023future
+% UNCITED: wef2023skills
+% UNCITED: who2022assistive
+% UNCITED: who2023disability
+
+\end{thebibliography}

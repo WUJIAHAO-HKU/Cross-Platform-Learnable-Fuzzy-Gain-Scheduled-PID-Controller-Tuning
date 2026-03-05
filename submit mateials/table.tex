@@ -1,0 +1,822 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{array}
+\usepackage{bm}
+\usepackage[table]{xcolor}
+\usepackage{geometry}
+\geometry{
+    left=2.5cm,    % 左边距
+    right=2.5cm,   % 右边距
+    top=2cm,       % 上边距
+    bottom=2cm     % 下边距
+}
+% Define custom column types
+\newcolumntype{L}{l}
+
+% Revision highlighting command (matching manuscript)
+\newcommand{\rev}[1]{{\color{blue}#1}}
+
+\title{All Tables from Meta-RL LF-PID Control Revised Manuscript}
+\author{Extracted from Revised Manuscript (ROB-2026-0021)}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Summary}
+
+This document contains all tables extracted from the revised manuscript. Tables are organized by their appearance in the paper:
+
+\begin{itemize}
+    \item \textbf{Main Text Tables (10):} Core results and comparisons
+    \begin{itemize}
+        \item Table 1: Sensitivity of Controllability Threshold
+        \item Table 2: Pilot Comparison of Optimization Algorithms
+        \item Table 3: Baseline Design Summary
+        \item Table 4: Performance on Franka Panda (9-DOF)
+        \item Table 5: Performance on Laikago (12-DOF)
+        \item Table 6: Per-Joint Tracking Error Comparison Across Platforms
+        \item Table 7: Leave-One-Platform-Out Analysis
+        \item Table 8: Robustness Analysis
+        \item Table 9: Ablation --- Data Augmentation Impact
+        \item Table 10: Optimization Ceiling Effect Quantification
+    \end{itemize}
+    \item \textbf{Appendix Tables (9):} Hyperparameters, configuration, and extended analysis
+    \begin{itemize}
+        \item Table 11: Meta-Learning Network Hyperparameters (Appendix A.1)
+        \item Table 12: PPO Algorithm Hyperparameters (Appendix A.2)
+        \item Table 13: Data Augmentation and LF-PID Optimization (Appendix A.3)
+        \item Table 14: Reward Function and Environment (Appendix A.4)
+        \item Table 15: Computing Infrastructure (Appendix A.5)
+        \item Table 16: Multi-Seed Evaluation Configuration (Appendix A.6)
+        \item Table 17: Computational Resource Breakdown (Appendix C)
+        \item Table 18: Ablation --- RL Adaptation Subset (Appendix D)
+        \item Table 19: Meta-Learning Train/Validation Performance (Appendix E)
+    \end{itemize}
+    \item \textbf{Nomenclature Tables (2):} Acronyms and mathematical symbols
+\end{itemize}
+
+\textbf{Total Tables: 21}
+
+\textbf{Note:} All tables include ``Source: Authors own work'' attribution as per journal submission requirements.
+
+% ===========================================================================
+% MAIN TEXT TABLES
+% ===========================================================================
+
+\section*{MAIN TEXT TABLES}
+
+% ===========================================================================
+% TABLE 1: Sensitivity of Controllability Threshold
+% ===========================================================================
+
+\section*{Table 1: Sensitivity of Controllability Threshold}
+
+\begin{tabular}{lcccc}
+\hline
+Threshold & Retained & Mean Error ($^\circ$) & NMAE (\%) & Downstream MAE ($^\circ$) \\
+\hline
+10$^\circ$ & 98 & 6.2$\pm$2.1 & 52.8 & 9.14 \\
+20$^\circ$ & 178 & 9.8$\pm$4.7 & 48.3 & 8.02 \\
+\textbf{30$^\circ$} & \textbf{232} & \textbf{13.9$\pm$8.4} & \textbf{47.1} & \textbf{7.51} \\
+40$^\circ$ & 268 & 16.5$\pm$10.2 & 49.6 & 7.89 \\
+No filter & 303 & 19.1$\pm$12.8 & 55.4 & 8.73 \\
+\hline
+\end{tabular}
+
+\vspace{0.2cm}
+\noindent
+\textbf{Caption:} Sensitivity of controllability threshold on data quality and downstream meta-learning performance (Franka 7-DOF). Retained = number of virtual samples passing the filter out of 303 total. Downstream MAE is the meta-learning prediction error (degrees) on the held-out test set.
+
+\vspace{0.2cm}
+\noindent
+\textbf{Source:} Authors own work.
+
+% ===========================================================================
+% TABLE 2: Pilot Comparison of Optimization Algorithms
+% ===========================================================================
+
+\section*{Table 2: Pilot Comparison of Optimization Algorithms}
+
+\begin{tabular}{@{\extracolsep{\fill}}lcccl@{}}
+\hline
+\textbf{Method} & \textbf{Obj. ($^\circ$)} & \textbf{Evals} & \textbf{Time (s)} & \textbf{Notes} \\
+\hline
+DE+NM (ours) & 13.9$\pm$4.2 & 128 & 42$\pm$12 & Robust; no gradient needed \\
+CMA-ES & 13.2$\pm$3.8 & 210 & 68$\pm$18 & Better mean; higher cost \\
+L-BFGS-B & 18.7$\pm$9.1 & 85 & 28$\pm$8 & Fast; frequent local minima \\
+PSO ($N$=20) & 14.5$\pm$5.0 & 400 & 125$\pm$30 & Slowest; marginal gain \\
+\hline
+\end{tabular}
+
+\vspace{0.2cm}
+\noindent
+\textbf{Caption:} Pilot comparison of optimization algorithms on 20 representative virtual robots. All methods use identical simulation budget (2000-step trajectory evaluation). ``Obj.'' denotes the final objective $\mathcal{L}_v(\theta^*)$ in degrees. ``Evals'' denotes the number of objective function evaluations (each requiring one forward simulation).
+
+\vspace{0.2cm}
+\noindent
+\textbf{Source:} Authors own work.
+
+% ===========================================================================
+% TABLE 3: Baseline Design Summary
+% ===========================================================================
+
+\section*{Table 3: Baseline Design Summary}
+
+\begin{tabular}{@{\extracolsep{\fill}}lll}
+\hline
+\textbf{Baseline} & \textbf{Deploy Time} & \textbf{Key Characteristic} \\
+\hline
+Fuzzy-PID (manual) & hours & Interpretable scheduling, platform-dependent tuning \\
+Meta-LF-PID & 0.8 ms & Instant zero-shot, no adaptation \\
+Meta-LF-PID+RL & 10 min & Online refinement, additional training overhead \\
+Heuristic (Z-N) & 40-120 hrs & Expert dependent, no transfer \\
+Optimized (DE) & 30-60 min & High accuracy, no generalization \\
+\hline
+\end{tabular}
+
+\vspace{0.2cm}
+\noindent
+\textbf{Source:} Authors own work.
+
+% ===========================================================================
+% TABLE 4: Performance on Franka Panda (9-DOF)
+% ===========================================================================
+
+\section*{Table 4: Performance on Franka Panda (9-DOF)}
+
+\begin{tabular}{@{\extracolsep{\fill}}llll}
+\hline
+\textbf{Metric} & \textbf{Meta-LF-PID} & \textbf{Meta-LF-PID+RL} & \textbf{Improv.} \\
+\hline
+MAE ($^\circ$) & 7.51 & \textbf{6.26} & +16.6\% \\
+RMSE ($^\circ$) & 29.32 & \textbf{25.45} & +13.2\% \\
+Max Error ($^\circ$) & 48.49 & \textbf{42.12} & +13.1\% \\
+Std Dev ($^\circ$) & 4.94 & \textbf{4.40} & +10.9\% \\
+\hline
+\end{tabular}
+
+\vspace{0.2cm}
+\noindent
+\textbf{Source:} Authors own work.
+
+% ===========================================================================
+% TABLE 5: Performance on Laikago (12-DOF)
+% ===========================================================================
+
+\section*{Table 5: Performance on Laikago (12-DOF)}
+
+\begin{tabular}{@{\extracolsep{\fill}}llll}
+\hline
+\textbf{Metric} & \textbf{Meta-LF-PID} & \textbf{Meta-LF-PID+RL} & \textbf{Improv.} \\
+\hline
+MAE ($^\circ$) & 5.91 & \textbf{5.79} & +2.1\% \\
+RMSE ($^\circ$) & 29.70 & \textbf{29.29} & +1.4\% \\
+Max Error ($^\circ$) & 53.09 & \textbf{50.44} & +5.0\% \\
+Std Dev ($^\circ$) & 5.25 & \textbf{5.18} & +1.3\% \\
+\hline
+\end{tabular}
+
+\vspace{0.2cm}
+\noindent
+\textbf{Source:} Authors own work.
+
+% ===========================================================================
+% TABLE 6: Per-Joint Tracking Error Comparison Across Platforms
+% ===========================================================================
+
+\section*{Table 6: Per-Joint Tracking Error Comparison Across Platforms}
+
+\begin{tabular}{@{\extracolsep{\fill}}lllll}
+\hline
+\textbf{Robot} & \textbf{Joint} & \textbf{Pure Meta-LF-PID ($^\circ$)} & \textbf{Meta-LF-PID+RL ($^\circ$)} & \textbf{Improv.} \\
+\hline
+Franka Panda    & J1     &   2.57 &   2.26 & +12.2\% \\
+                & J2     &  12.36 &   2.42 & \textbf{+80.4\%} \\
+                & J3     &   4.10 &   3.87 &  +5.7\% \\
+                & J4     &   6.78 &   6.49 &  +4.3\% \\
+                & J5     &   5.41 &   5.32 &  +1.6\% \\
+                & J6     &   4.31 &   4.19 &  +2.8\% \\
+                & J7     &  11.45 &  11.26 &  +1.6\% \\
+                & J8     &  10.23 &  10.19 &  +0.3\% \\
+                & J9     &  10.36 &  10.33 &  +0.3\% \\
+\hline
+\textit{Franka Panda Avg} & &   7.51 &   6.26 & +16.6\% \\
+\hline
+Laikago         & J1     &   1.38 &   1.52 &  -9.6\% \\
+                & J2     &   6.16 &   5.96 &  +3.3\% \\
+                & J3     &  10.45 &  10.34 &  +1.0\% \\
+                & J4     &   1.36 &   1.45 &  -6.8\% \\
+                & J5     &   5.70 &   5.96 &  -4.5\% \\
+                & J6     &  10.54 &  10.33 &  +2.0\% \\
+                & J7     &   1.36 &   1.41 &  -3.1\% \\
+                & J8     &   5.35 &   5.86 &  -9.6\% \\
+                & J9     &  10.44 &  10.36 &  +0.8\% \\
+                & J10    &   1.35 &   1.44 &  -6.7\% \\
+                & J11    &   6.41 &   5.92 &  +7.7\% \\
+                & J12    &  10.44 &  10.39 &  +0.5\% \\
+\hline
+\textit{Laikago Avg} & &   5.91 &   5.79 &  +2.1\% \\
+\hline
+\end{tabular}
+
+\vspace{0.2cm}
+\noindent
+\textbf{Source:} Authors own work.
+
+% ===========================================================================
+% TABLE 7: Leave-One-Platform-Out Analysis
+% ===========================================================================
+
+\section*{Table 7: Leave-One-Platform-Out Analysis}
+
+\begin{tabular}{@{\extracolsep{\fill}}lllll}
+\hline
+\textbf{Platform} & \textbf{Augmented} & \textbf{Training} & \textbf{Meta-LF-PID} & \textbf{Meta+RL} \\
+& \textbf{Variants} & \textbf{Contrib.} & \textbf{MAE ($^\circ$)} & \textbf{MAE ($^\circ$)} \\
+\hline
+Franka Panda (9-DOF) & 150 & $\sim$65\% & 7.51 & 6.26 \\
+KUKA iiwa (7-DOF) & 150 & $\sim$35\% & \multicolumn{2}{c}{\textit{training source only}} \\
+Laikago (12-DOF) & 0 & $\leq$0.4\% & 5.91 & 5.79 \\
+\hline
+\end{tabular}
+
+\vspace{0.2cm}
+\noindent
+\textbf{Caption:} Leave-one-platform-out analysis: training data composition vs.\ evaluation performance. Laikago contributes at most 1 base configuration sample (0.4\% of training data), making the current evaluation a \textit{de facto} leave-one-platform-out experiment for the most challenging inter-morphology case.
+
+\vspace{0.2cm}
+\noindent
+\textbf{Source:} Authors own work.
+
+% ===========================================================================
+% TABLE 8: Robustness Analysis (Franka Panda)
+% ===========================================================================
+
+\section*{Table 8: Robustness Analysis (Franka Panda, MAE in $^\circ$, Representative Seed 51, 20 Episodes)}
+
+\begin{tabular}{@{\extracolsep{\fill}}llll}
+\hline
+\textbf{Disturbance} & \textbf{Meta-LF-PID} & \textbf{Meta-LF-PID+RL} & \textbf{Improv.} \\
+\hline
+No Disturbance & 7.51 & \textbf{6.26} & +16.6\% \\
+Random Force & 25.77 & \textbf{25.01} & +2.9\% \\
+Payload Var. & 67.12 & \textbf{61.68} & +8.1\% \\
+\textbf{Param. Uncert.} & 35.90 & \textbf{29.01} & \textbf{+19.2\%} \\
+Mixed Dist. & 88.00 & \textbf{82.37} & +6.4\% \\
+\hline
+\textit{Average} & \textit{49.09} & \textit{44.59} & \textit{+10.0\%} \\
+\hline
+\end{tabular}
+
+\vspace{0.2cm}
+\noindent
+\textbf{Source:} Authors own work.
+
+% ===========================================================================
+% TABLE 9: Ablation - Data Augmentation Impact
+% ===========================================================================
+
+\section*{Table 9: Ablation --- Data Augmentation Impact}
+
+\begin{tabular}{@{\extracolsep{\fill}}lll}
+\hline
+\textbf{Training Data} & \textbf{Samples} & \textbf{Prediction Error (\%)} \\
+\hline
+Base robots only & 3 & 31.2 \\
++ Augmentation & 303 & 3.33 \\
+\hline
+\end{tabular}
+
+\vspace{0.2cm}
+\noindent
+\textbf{Source:} Authors own work.
+
+% ===========================================================================
+% TABLE 10: Optimization Ceiling Effect Quantification
+% ===========================================================================
+
+\section*{Table 10: Optimization Ceiling Effect Quantification}
+
+\begin{tabular}{@{\extracolsep{\fill}}lll}
+\hline
+\textbf{Metric} & \textbf{Franka Panda (9-DOF)} & \textbf{Laikago (12-DOF)} \\
+\hline
+Baseline MAE ($^\circ$)         & 7.51             & 5.91             \\
+RL-adapted MAE ($^\circ$)       & 6.26             & 5.79             \\
+Platform $G_{\mathrm{RL}}$ (\%)              & \textbf{16.6}    & 2.1              \\
+Baseline $\mathrm{CV}_e$                     & 0.457            & 0.630            \\
+Max $G_{\mathrm{RL},j}$ (\%)           & 80.4 (J2)        & 7.6 (J11)        \\
+Median $G_{\mathrm{RL},j}$ (\%)         & 1.7              & $-$0.6           \\
+Joints with $G_{\mathrm{RL},j} < 0$     & 0 / 9            & 6 / 12           \\
+Error range ($^\circ$)          & 2.57--12.36      & 1.35--10.54      \\
+\hline
+\end{tabular}
+
+\vspace{0.2cm}
+\noindent
+\textbf{Caption:} Quantitative characterization of the optimization ceiling effect. $G_{\mathrm{RL}}$ = platform-level RL gain rate; $\mathrm{CV}_e$ = coefficient of variation of baseline joint errors; Max $G_{\mathrm{RL},j}$ = highest per-joint gain; Joints with $G_{\mathrm{RL},j}<0$ = joints where RL slightly degrades performance.
+
+\vspace{0.2cm}
+\noindent
+\textbf{Source:} Authors own work.
+
+% ===========================================================================
+% APPENDIX TABLES
+% ===========================================================================
+
+\newpage
+\section*{APPENDIX TABLES}
+
+% ===========================================================================
+% TABLE 11: Meta-Learning Network Hyperparameters (Appendix A.1)
+% ===========================================================================
+
+\section*{Table 11: Meta-Learning Network Hyperparameters}
+
+\centering
+\small
+\begin{tabular}{@{}p{0.42\linewidth}p{0.48\linewidth}@{}}
+\hline
+\textbf{Parameter} & \textbf{Value} \\
+\hline
+\multicolumn{2}{@{}l}{\textit{Network Architecture}} \\
+Input dimension & 10 \\
+Encoder layers & 256 + 256 + LayerNorm \\
+Hidden layer & 128 + LayerNorm \\
+Output dimension & 7 \\
+Output activation & Sigmoid \\
+\hline
+\multicolumn{2}{@{}l}{\textit{Training Configuration}} \\
+Optimizer & Adam \\
+Learning rate & 0.001 \\
+Weight decay & $10^{-5}$ \\
+Batch size & 32 \\
+Max epochs & 500 \\
+Early stopping & 50 epochs \\
+Loss function & Weighted MSE \\
+\hline
+\multicolumn{2}{@{}l}{\textit{Data Split}} \\
+Training samples & 185 (80\%) \\
+Validation samples & 47 (20\%) \\
+Total samples & 232 \\
+\hline
+\multicolumn{2}{@{}l}{\textit{Training Time}} \\
+Time per epoch & $\sim$1 second \\
+Total time & $\sim$8 minutes \\
+\hline
+\end{tabular}
+
+\vspace{0.3cm}
+\noindent
+\textbf{Source:} Authors own work.
+
+\raggedright
+
+% ===========================================================================
+% TABLE 12: PPO Algorithm Hyperparameters (Appendix A.2)
+% ===========================================================================
+
+\section*{Table 12: PPO Algorithm Hyperparameters}
+
+\centering
+\small
+\begin{tabular}{@{}p{0.42\linewidth}p{0.48\linewidth}@{}}
+\hline
+\textbf{Parameter} & \textbf{Value} \\
+\hline
+\multicolumn{2}{@{}l}{\textit{Network Architecture}} \\
+Policy network & [s\_dim, 256, 256, 3n] \\
+Value network & [s\_dim, 256, 256, 1] \\
+State dimension & varies by platform \\
+Action dimension & 3n (27 for Franka, 36 for Laikago) \\
+Action range & $[-0.2, 0.2]$ per adjustment \\
+\hline
+\multicolumn{2}{@{}l}{\textit{PPO Algorithm}} \\
+Total timesteps & 1,000,000 \\
+Parallel envs & 8 \\
+Steps per env & 2,048 \\
+Batch size & 256 \\
+Mini-batch size & 256 \\
+Epochs & 10 \\
+Clip range $\epsilon$ & 0.2 \\
+\hline
+\multicolumn{2}{@{}l}{\textit{Learning Rates}} \\
+Policy LR & $1 \times 10^{-4}$ \\
+Value LR & $1 \times 10^{-4}$ \\
+LR schedule & Constant \\
+\hline
+\multicolumn{2}{@{}l}{\textit{GAE \& Discount}} \\
+Discount $\gamma$ & 0.99 \\
+GAE $\lambda$ & 0.95 \\
+\hline
+\multicolumn{2}{@{}l}{\textit{Loss Coefficients}} \\
+Value loss coef & 0.5 \\
+Entropy coef & 0.02 \\
+Max grad norm & 0.5 \\
+\hline
+\multicolumn{2}{@{}l}{\textit{Training Time}} \\
+Wall-clock time & $\sim$10 minutes \\
+FPS & $\sim$1,300 \\
+\hline
+\end{tabular}
+
+\vspace{0.3cm}
+\noindent
+\textbf{Source:} Authors own work.
+
+\raggedright
+
+% ===========================================================================
+% TABLE 13: Data Augmentation and LF-PID Optimization (Appendix A.3)
+% ===========================================================================
+
+\section*{Table 13: Data Augmentation and LF-PID Optimization}
+
+\centering
+\small
+\begin{tabular}{@{}p{0.45\linewidth}p{0.45\linewidth}@{}}
+\hline
+\textbf{Parameter} & \textbf{Value} \\
+\hline
+\multicolumn{2}{@{}l}{\textit{Property Perturbation}} \\
+Mass range & $\pm 10\%$ \\
+Inertia range & \rev{$\pm 15\%$} \\
+Link length range & $\pm 5\%$ \\
+\rev{Friction range} & \rev{$\pm 20\%$} \\
+\rev{Damping range} & \rev{$\pm 30\%$} \\
+Payload range & $[0, 2\times$ base$]$ \\
+Virtual per robot & 100 \\
+Total virtual & 300 \\
+Total real & 3 \\
+Before filtering & 303 \\
+\hline
+\multicolumn{2}{@{}l}{\textit{LF-PID Optimization}} \\
+DE population & 8 \\
+DE iterations & 15 \\
+DE mutation $F$ & \rev{0.8} \\
+DE crossover & 0.7 \\
+Bounds & $K_p, K_d \in [0.1, 500]$ \\
+ & $K_i \in [0, 1]$ \\
+NM tolerance & $10^{-6}$ \\
+Trajectory & 2000 steps (20s) \\
+Time/sample & \rev{30--60s (1 core)} \\
+\rev{Parallelism} & \rev{23 cores} \\
+Total time & $\sim$5 min \\
+\hline
+\multicolumn{2}{@{}l}{\textit{Data Filtering}} \\
+Error threshold & $30^\circ$ \\
+Min per robot & 30 \\
+Removed & 71 (23.4\%) \\
+Final samples & 232 \\
+\hline
+\end{tabular}
+
+\vspace{0.3cm}
+\noindent
+\textbf{Source:} Authors own work.
+
+\raggedright
+
+% ===========================================================================
+% TABLE 14: Reward Function and Environment (Appendix A.4)
+% ===========================================================================
+
+\section*{Table 14: Reward Function and Environment}
+
+\centering
+\small
+\begin{tabular}{@{}p{0.38\linewidth}p{0.38\linewidth}p{0.14\linewidth}@{}}
+\hline
+\textbf{Component} & \textbf{Formula} & \textbf{Weight} \\
+\hline
+Position error & $-\|q_t - q_{ref,t}\|_2$ & 1.0 \\
+Velocity error & $-\|\dot{q}_t - \dot{q}_{ref,t}\|_2$ & 0.5 \\
+Jerk penalty & $-\|\ddot{q}_t - \ddot{q}_{t-1}\|_2$ & 0.1 \\
+LF-PID parameter change & $-\|\bm{\theta}_t - \bm{\theta}_{t-1}\|_2$ & 0.05 \\
+Success bonus & +10 if $\|e_t\| < 5^\circ$ & - \\
+Failure penalty & -100 if unstable & - \\
+\hline
+\multicolumn{3}{@{}l}{\textit{Environment Settings}} \\
+\multicolumn{2}{@{}l}{Episode length} & 2000 steps \\
+\multicolumn{2}{@{}l}{Control frequency} & 100 Hz \\
+\multicolumn{2}{@{}l}{Simulator} & PyBullet 3.2.5 \\
+\multicolumn{2}{@{}l}{Physics timestep} & 0.01 s \\
+\hline
+\end{tabular}
+
+\vspace{0.3cm}
+\noindent
+\textbf{Source:} Authors own work.
+
+\raggedright
+
+% ===========================================================================
+% TABLE 15: Computing Infrastructure (Appendix A.5)
+% ===========================================================================
+
+\section*{Table 15: Computing Infrastructure}
+
+\centering
+\small
+\begin{tabular}{@{}p{0.4\linewidth}p{0.5\linewidth}@{}}
+\hline
+\textbf{Component} & \textbf{Specification} \\
+\hline
+\multicolumn{2}{@{}l}{\textit{Hardware}} \\
+CPU & Intel i7-11800H (8c/16t) \\
+GPU & NVIDIA RTX 3060 (6GB) \\
+RAM & 16GB DDR4-3200 \\
+OS & Ubuntu 20.04 LTS \\
+\hline
+\multicolumn{2}{@{}l}{\textit{Software}} \\
+Python & 3.10.13 \\
+PyTorch & 2.0.1 (CUDA 11.7) \\
+Stable-Baselines3 & 2.0.0 \\
+PyBullet & 3.2.5 \\
+\hline
+\multicolumn{2}{@{}l}{\textit{Training Time}} \\
+Data augmentation & $\sim$5 min \\
+LF-PID optimization & $\sim$5 min \\
+Meta-learning & $\sim$8 min \\
+RL (per robot) & $\sim$2.5 hours \\
+\textbf{Total pipeline} & \textbf{$\sim$3 hours} \\
+\hline
+\end{tabular}
+
+\vspace{0.3cm}
+\noindent
+\textbf{Source:} Authors own work.
+
+\raggedright
+
+% ===========================================================================
+% TABLE 16: Multi-Seed Evaluation Configuration (Appendix A.6)
+% ===========================================================================
+
+\section*{Table 16: Multi-Seed Evaluation Configuration}
+
+\centering
+\small
+\begin{tabular}{@{}p{0.42\linewidth}p{0.48\linewidth}@{}}
+\hline
+\textbf{Parameter} & \textbf{Value} \\
+\hline
+Seed range & 0-99 (100 different seeds) \\
+Episodes per seed & 20 per disturbance scenario \\
+Total episodes & 10,000 (100$\times$5$\times$20) \\
+Representative seed & 51 (near-median performance) \\
+Statistical metric & Mean$\pm$std across all seeds \\
+\hline
+\multicolumn{2}{@{}l}{\textit{Stochastic Factors Controlled by Seeds}} \\
+\multicolumn{2}{@{}l}{- Trajectory initialization randomness} \\
+\multicolumn{2}{@{}l}{- Disturbance timing and sequencing} \\
+\multicolumn{2}{@{}l}{- Environment noise and variations} \\
+\multicolumn{2}{@{}l}{- RL policy exploration randomness} \\
+\hline
+\end{tabular}
+
+\vspace{0.3cm}
+\noindent
+\textbf{Source:} Authors own work.
+
+\raggedright
+
+% ===========================================================================
+% TABLE 17: Computational Resource Breakdown (Appendix C)
+% ===========================================================================
+
+\section*{Table 17: Computational Resource Breakdown for All Methods}
+
+\centering
+\scriptsize
+\begin{tabular}{@{}lcccl@{}}
+\hline
+\textbf{Method} & \textbf{Steps} & \textbf{Evals} & \textbf{Cores} & \textbf{Time} \\
+\hline
+\multicolumn{5}{@{}l}{\textit{Training/Optimization Phase}} \\
+\quad Meta-LF-PID (offline) & 464M$^{\dagger}$ & - & 1 & 5 min \\
+\quad \quad Per-sample DE+NM & 2M & 128 & 1 & 30-60s \\
+\quad \quad Meta net training & - & 232$\times$500 & 1 & 3 min \\
+\quad RL training (per plat.) & 8M$^{\ddagger}$ & - & 8 & 10 min \\
+\quad DE optim. (per plat.) & 2M & 128 & 1 & 30-60m \\
+\quad Manual Fuzzy-PID & - & - & - & 40-120h \\
+\hline
+\multicolumn{5}{@{}l}{\textit{Deployment/Inference Phase}} \\
+\quad Meta-LF-PID infer. & - & 1 & 1 & 0.8 ms \\
+\quad Meta-LF-PID+RL infer. & - & 1 & 1 & 4 ms \\
+\quad DE-optimized ctrl. & - & 1 & 1 & 0.1 ms \\
+\hline
+\end{tabular}
+
+\vspace{0.2cm}
+
+\noindent \footnotesize{$^{\dagger}$Total across 232 samples during offline meta-training: $232 \times 2M = 464M$ steps.}
+
+\noindent \footnotesize{$^{\ddagger}$RL training: $1M \times 8$ parallel environments = 8M total environment steps.}
+
+\vspace{0.2cm}
+\noindent
+\normalsize\textbf{Source:} Authors own work.
+
+\raggedright
+
+% ===========================================================================
+% TABLE 18: Ablation - RL Adaptation Subset (Appendix D)
+% ===========================================================================
+
+\section*{Table 18: Ablation --- RL Adaptation Subset Performance on Franka Panda}
+
+\centering
+\footnotesize
+\begin{tabular}{@{}lcccc@{}}
+\hline
+\textbf{Adaptation Subset} & \textbf{Dim} & \textbf{MAE ($^\circ$)} & \textbf{Improv.} & \textbf{Stability$^*$} \\
+\hline
+Meta-LF-PID (no RL) & - & 7.51 & - & N/A \\
+\hline
+Scales only (Proposed) & 27 & \textbf{6.26} & +16.6\% & 0/5 div. \\
+Consequents subset & 81 & 6.89 & +8.3\% & 2/5 div. \\
+Scales + Consequents & 108 & 6.42 & +14.5\% & 3/5 div. \\
+\hline
+\end{tabular}
+
+\vspace{0.2cm}
+
+\noindent \footnotesize{$^*$Divergence across 5 seeds (42, 101, 202, 303, 404); div. = episode reward $< -200$ for $>$20\% of final 100k steps.}
+
+\vspace{0.2cm}
+\noindent
+\normalsize\textbf{Source:} Authors own work.
+
+\raggedright
+
+% ===========================================================================
+% TABLE 19: Meta-Learning Train/Validation Performance (Appendix E)
+% ===========================================================================
+
+\section*{Table 19: Meta-Learning Train/Validation Performance}
+
+\centering
+\begin{tabular}{@{}lccc@{}}
+\hline
+\textbf{Robot Type} & \textbf{Train (\%)} & \textbf{Val (\%)} & \textbf{Gap} \\
+\hline
+Franka variants (n=9) & 2.87 & 3.21 & +0.34 \\
+KUKA variants (n=7) & 2.95 & 3.41 & +0.46 \\
+Laikago variants (n=12) & 3.12 & 3.58 & +0.46 \\
+\hline
+Overall & 2.98 & 3.40 & +0.42 \\
+\hline
+\end{tabular}
+
+\vspace{0.2cm}
+\noindent
+\normalsize\textbf{Source:} Authors own work.
+
+\raggedright
+
+% ===========================================================================
+% NOMENCLATURE TABLES
+% ===========================================================================
+
+\newpage
+\section*{NOMENCLATURE TABLES}
+
+% ===========================================================================
+% TABLE 20: Nomenclature - Acronyms
+% ===========================================================================
+
+\section*{Table 20: Nomenclature --- Acronyms}
+
+\begin{tabular}{@{}p{0.25\linewidth}p{0.65\linewidth}@{}}
+\hline
+\textbf{Acronym} & \textbf{Description} \\
+\hline
+PID & Proportional-Integral-Derivative \\
+RL & Reinforcement Learning \\
+PPO & Proximal Policy Optimization \\
+DE & Differential Evolution \\
+MAML & Model-Agnostic Meta-Learning \\
+MAE & Mean Absolute Error \\
+RMSE & Root Mean Square Error \\
+NMAE & Normalized Mean Absolute Error \\
+DOF & Degrees of Freedom \\
+MLP & Multi-Layer Perceptron \\
+\hline
+\end{tabular}
+
+\vspace{0.3cm}
+\noindent
+\textbf{Source:} Authors own work.
+
+% ===========================================================================
+% TABLE 21: Nomenclature - Mathematical Symbols
+% ===========================================================================
+
+\section*{Table 21: Nomenclature --- Mathematical Symbols}
+
+\begin{tabular}{@{}p{0.20\linewidth}p{0.50\linewidth}p{0.20\linewidth}@{}}
+\hline
+\textbf{Symbol} & \textbf{Description} & \textbf{Dim/Value} \\
+\hline
+\multicolumn{3}{@{}l}{\textit{Robot Features \& Network Architecture}} \\
+$\mathbf{f}$ & Robot feature vector & $\mathbb{R}^{10}$ \\
+$n_{dof}$ & Number of degrees of freedom & - \\
+$\mathbf{h}_1, \mathbf{h}_2$ & Encoder layer outputs & $\mathbb{R}^{256}$ \\
+$\mathbf{h}_{hidden}$ & Hidden layer output & $\mathbb{R}^{128}$ \\
+$W_1, W_2, W_3$ & Weight matrices & - \\
+$\sigma$ & Sigmoid activation & - \\[0.2cm]
+\multicolumn{3}{@{}l}{\textit{LF-PID Parameters}} \\
+$\bar{K}_p, \bar{K}_i, \bar{K}_d$ & Base PID gains within LF-PID & - \\
+$\bm{\theta}$ & LF-PID parameter vector (base gains + scales + TS consequents) & $\mathbb{R}^{D}$ \\
+$\bm{\theta}_v^*$ & Ground-truth optimal LF-PID parameters & - \\
+$\hat{\bm{\theta}}_v$ & Predicted LF-PID parameters & - \\[0.2cm]
+\multicolumn{3}{@{}l}{\textit{Control \& Trajectory}} \\
+$q(t)$ & Joint position vector & rad \\
+$\dot{q}(t)$ & Joint velocity vector & rad/s \\
+$q_{ref}(t)$ & Reference trajectory & rad \\
+$e(t)$ & Tracking error & rad \\
+$u(t)$ & Control torque & N$\cdot$m \\
+$n$ & Number of joints & - \\[0.2cm]
+\multicolumn{3}{@{}l}{\textit{Loss Functions \& Optimization}} \\
+$\mathcal{L}_{meta}$ & Meta-learning loss & - \\
+$\mathcal{L}_v(\theta)$ & Trajectory tracking error & rad \\
+$w_v$ & Sample weight & - \\
+\rev{$N$} & \rev{Number of training samples (filtered)} & \rev{232} \\
+$\theta^*_{global}$ & Global-search LF-PID optimum from DE & - \\
+$\theta^*_v$ & Final optimized LF-PID parameters & - \\
+$T$ & Trajectory length & 2000 \\[0.2cm]
+\multicolumn{3}{@{}l}{\textit{RL Components}} \\
+$\mathbf{s}_t$ & State observation & - \\
+$\mathbf{a}_t$ & RL action (scaling factor adjustments) & $[-0.2,0.2]^{3n}$ \\
+$\bm{s}$ & Per-joint input scaling factors & $\mathbb{R}^{3n}$ \\
+$r_t$ & Reward signal & $[-100,10]$ \\
+$\gamma$ & Discount factor & 0.99 \\
+$\lambda$ & GAE parameter & 0.95 \\[0.2cm]
+\multicolumn{3}{@{}l}{\textit{\color{blue}Ceiling Effect Metrics}} \\
+\rev{$G_{\mathrm{RL},j}$} & \rev{Per-joint RL gain rate} & \rev{\%} \\
+\rev{$G_{\mathrm{RL}}$} & \rev{Platform-level RL gain rate} & \rev{\%} \\
+\rev{$\mathrm{CV}_e$} & \rev{Coefficient of variation of baseline joint errors} & \rev{-} \\
+\rev{$e_{\mathrm{base},j}$} & \rev{Meta-LF-PID baseline error for joint $j$} & \rev{$^\circ$} \\
+\rev{$e_{\mathrm{RL},j}$} & \rev{Meta-LF-PID+RL error for joint $j$} & \rev{$^\circ$} \\
+\hline
+\end{tabular}
+
+\vspace{0.3cm}
+\noindent
+\textbf{Source:} Authors own work.
+
+% ===========================================================================
+% LIST OF ALL TABLES
+% ===========================================================================
+
+\newpage
+\section*{List of All Tables in This Document}
+
+\subsection*{Main Text Tables (Tables 1--10)}
+\begin{enumerate}
+    \item Sensitivity of Controllability Threshold
+    \item Pilot Comparison of Optimization Algorithms
+    \item Baseline Design Summary
+    \item Performance on Franka Panda (9-DOF)
+    \item Performance on Laikago (12-DOF)
+    \item Per-Joint Tracking Error Comparison Across Platforms
+    \item Leave-One-Platform-Out Analysis
+    \item Robustness Analysis (Franka Panda, MAE in degrees)
+    \item Ablation --- Data Augmentation Impact
+    \item Optimization Ceiling Effect Quantification
+\end{enumerate}
+
+\subsection*{Appendix Tables (Tables 11--19)}
+\begin{enumerate}
+    \setcounter{enumi}{10}
+    \item Meta-Learning Network Hyperparameters (Appendix A.1)
+    \item PPO Algorithm Hyperparameters (Appendix A.2)
+    \item Data Augmentation and LF-PID Optimization (Appendix A.3)
+    \item Reward Function and Environment (Appendix A.4)
+    \item Computing Infrastructure (Appendix A.5)
+    \item Multi-Seed Evaluation Configuration (Appendix A.6)
+    \item Computational Resource Breakdown for All Methods (Appendix C)
+    \item Ablation --- RL Adaptation Subset Performance (Appendix D)
+    \item Meta-Learning Train/Validation Performance (Appendix E)
+\end{enumerate}
+
+\subsection*{Nomenclature Tables (Tables 20--21)}
+\begin{enumerate}
+    \setcounter{enumi}{19}
+    \item Nomenclature --- Acronyms
+    \item Nomenclature --- Mathematical Symbols
+\end{enumerate}
+
+\vspace{0.5cm}
+\noindent
+\textbf{Note:} All tables preserve original LaTeX formatting from the revised manuscript, including caption labels, mathematical notation, and source attribution. Blue-colored text (\rev{like this}) indicates revisions made in response to reviewer comments.
+
+\end{document}

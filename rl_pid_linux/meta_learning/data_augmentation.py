@@ -25,11 +25,11 @@ class PhysicsBasedAugmentation:
         
         # 默认参数变化范围（保守版：确保物理合理性）
         self.param_ranges = param_ranges or {
-            'mass_scale': (0.9, 1.1),          # 质量±10% (更保守)
-            'length_scale': (0.95, 1.05),      # 长度±5%  (更保守)
-            'inertia_scale': (0.95, 1.05),     # 惯性±5%  (更保守)
-            'friction': (0.8, 1.2),            # 摩擦系数±20% (更保守)
-            'damping': (0.7, 1.3)              # 阻尼±30% (更保守)
+            'mass_scale': (0.9, 1.1),          # 质量±10%
+            'length_scale': (0.95, 1.05),      # 长度±5%
+            'inertia_scale': (0.85, 1.15),     # 惯性±15%
+            'friction': (0.8, 1.2),            # 摩擦系数±20%
+            'damping': (0.7, 1.3)              # 阻尼±30%
         }
     
     def generate_virtual_robots(self, n_samples=100):

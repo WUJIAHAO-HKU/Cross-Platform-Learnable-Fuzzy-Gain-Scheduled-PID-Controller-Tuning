@@ -1,0 +1,70 @@
+\documentclass[11pt]{letter}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+% Author information
+\signature{Jiahao Wu \\ Corresponding Author}
+\address{The University of Hong Kong\\
+Hong Kong, China\\
+Email: 13620926353@163.com}
+
+\date{February 27, 2026}
+
+% Make closing and signature left-aligned
+\longindentation=0pt
+
+\begin{document}
+
+\begin{letter}{%
+The Editor\\
+\textit{Robotica}\\
+Cambridge University Press}
+
+\opening{Dear Editor,}
+
+We are pleased to submit our revised manuscript \textbf{ROB-2026-0021}, entitled:
+
+\begin{quote}
+\textbf{``Cross-Platform Learnable Fuzzy Gain-Scheduled Proportional-Integral-Derivative Tuning via Physics-Constrained Meta-Learning and Reinforcement Learning Adaptation''}
+\end{quote}
+
+\noindent for further consideration for publication as a Research Article in \textit{Robotica}.
+
+We thank the Editor and the anonymous reviewers for their thorough and constructive evaluations. Their feedback has substantially improved the rigor and clarity of this work. We have carefully addressed \textbf{all nine reviewer comments} in the accompanying point-by-point response letter.
+
+\medskip
+\noindent\textbf{Summary of Key Revisions:}
+
+\begin{enumerate}
+    \item \textbf{Sensitivity \& justification analyses (Reviewer 1, Comments 1--3):} Added Table~1 (controllability threshold sensitivity) and Table~2 (optimizer pilot comparison with CMA-ES, L-BFGS-B, PSO baselines), together with extended discussion of the data filtering rationale and hybrid DE+NM optimization choice.
+
+    \item \textbf{Generalization evidence (Reviewer 1, Comment 4; Reviewer 2, Comment 3):} Added leave-one-platform-out analysis (Table~7) showing that Laikago---contributing $\leq$0.4\% of training data---achieves 5.91° MAE via feature-space generalization alone, constituting a \textit{de facto} cross-morphology transfer test.
+
+    \item \textbf{Optimization ceiling effect (Reviewer 2, Comments 1--2):} Introduced formal per-joint RL gain rate metric $G_{\mathrm{RL},j}$, added Table~10 (quantitative characterization) and new Figure~7 (scatter plot with Spearman correlation $\rho_s = 0.38$), providing rigorous characterization of when RL adaptation is beneficial versus unnecessary.
+
+    \item \textbf{Computational budget transparency (Reviewer 2, Comment 4):} Added Appendix~C with unified resource breakdown table distinguishing one-time offline costs from per-platform deployment costs; clarified amortization of meta-learning overhead.
+
+    \item \textbf{Manual Fuzzy-PID baseline (Reviewer 1, Comment 5):} Added expert-tuned Fuzzy-PID baseline to Table~3, providing direct comparison with interpretable scheduling approaches.
+
+    \item \textbf{RL adaptation subset ablation (Reviewer 2, Comment 5):} Added Appendix~D with three-configuration ablation study (scales-only vs.\ consequents vs.\ combined), demonstrating that the proposed scales-only adaptation achieves the best balance of performance (+16.6\%) and stability (0/5 divergence).
+\end{enumerate}
+
+\noindent All revisions are highlighted in {\color{blue}blue} in the manuscript for easy identification.
+
+\medskip
+\noindent\textbf{Novelty and Key Findings:}
+
+This work presents a hierarchical framework that eliminates the need for per-platform expert tuning of PID controllers in robotics. The key novelty lies in combining physics-constrained virtual robot synthesis (generating 232 valid training variants from only 3 base platforms) with meta-learning for instant zero-shot initialization and lightweight RL for online adaptation. Validated on morphologically diverse platforms (9-DOF manipulator and 12-DOF quadruped), the method achieves up to 80.4\% error reduction on challenging joints and 19.2\% improvement under parameter uncertainty, while reducing deployment time from hours of expert tuning to under 10 minutes of automated adaptation. The newly identified \textit{optimization ceiling effect} provides practitioners with a principled criterion for deciding when RL refinement is cost-effective.
+
+\medskip
+\noindent\textbf{Declarations:} This is original work not under consideration elsewhere. No competing interests exist and no external funding was received. Complete author contributions, data availability, and AI-assisted technology declarations are provided in the manuscript. All code and data will be publicly available upon acceptance under the MIT License.
+
+\medskip
+We hope the revised manuscript now meets the standards of \textit{Robotica}. We look forward to your editorial decision.
+
+\closing{Sincerely,}
+
+\end{letter}
+
+\end{document}
